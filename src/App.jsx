@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { LayoutDashboard, FileText, Archive, Users, GraduationCap, Settings, Palette } from "lucide-react";
+// Importamos nuestra nueva base de datos
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
-// Pantallas
 import Dashboard from "./components/Dashboard";
 import FormularioFactura from "./components/FormularioFactura";
 import AjustesImpuestos from "./components/AjustesImpuestos";
@@ -11,17 +12,24 @@ import HistorialFacturas from "./components/HistorialFacturas";
 import DisenoFactura from "./components/DisenoFactura";
 
 function App() {
-  // La página de inicio ahora es el Dashboard
   const [vistaActiva, setVistaActiva] = useState("dashboard");
 
-  // ESTADOS GLOBALES
-  const [nombreApp, setNombreApp] = useState("Academia PRO");
-  const [subtituloApp, setSubtituloApp] = useState("Gestión & Pagos");
-  const [metodosPago, setMetodosPago] = useState(["Domiciliación Bancaria", "Transferencia", "Efectivo", "Tarjeta (TPV)"]);
+  // ==========================================
+  // 🧠 EL CEREBRO: ESTADOS GLOBALES (PERSISTENTES)
+  // Usamos useLocalStorage. El primer texto (ej: "app_nombre") es el nombre del archivo en el disco.
+  // ==========================================
   
-  // Estados para el Diseño de la Factura
-  const [colorFactura, setColorFactura] = useState("#2563eb"); // Azul por defecto
-  const [logoFactura, setLogoFactura] = useState(null);
+  // 1. Ajustes y Personalización
+  const [nombreApp, setNombreApp] = useLocalStorage("app_nombre", "Academia PRO");
+  const [subtituloApp, setSubtituloApp] = useLocalStorage("app_subtitulo", "Gestión & Pagos");
+  const [metodosPago, setMetodosPago] = useLocalStorage("app_metodos", ["Domiciliación Bancaria", "Transferencia", "Efectivo", "Tarjeta (TPV)"]);
+  const [colorFactura, setColorFactura] = useLocalStorage("app_color", "#2563eb");
+  const [logoFactura, setLogoFactura] = useLocalStorage("app_logo", null);
+
+  // 2. Bases de Datos (Empiezan como arrays vacíos, el usuario las llenará)
+  const [clientes, setClientes] = useLocalStorage("db_clientes", []);
+  const [productos, setProductos] = useLocalStorage("db_productos", []);
+  const [facturas, setFacturas] = useLocalStorage("db_facturas", []);
 
   const NavButton = ({ id, icon: Icon, text }) => (
     <button 
@@ -39,7 +47,7 @@ function App() {
     <div className="flex h-screen bg-gray-50 font-sans">
       
       {/* BARRA LATERAL */}
-      <div className="w-64 bg-gray-900 text-white flex flex-col shadow-xl z-10 flex-shrink-0">
+      <div className="w-64 bg-gray-900 text-white flex flex-col shadow-xl z-10 shrink-0">
         <div className="p-6">
           <h2 className="text-2xl font-extrabold text-blue-400 tracking-tight mb-0 truncate" title={nombreApp}>
             {nombreApp}
@@ -66,27 +74,41 @@ function App() {
         </nav>
       </div>
 
-      {/* ÁREA PRINCIPAL (Contenedor Maestro) */}
+      {/* ÁREA PRINCIPAL */}
       <div className="flex-1 overflow-y-auto p-6 md:p-10 flex justify-center items-start">
-        {/* Usamos un contenedor interno para forzar que TODAS las pantallas midan max-w-6xl y se alineen igual */}
         <div className="w-full max-w-6xl">
-          {vistaActiva === "dashboard" && <Dashboard setVistaActiva={setVistaActiva} />}
-          {vistaActiva === "factura" && <FormularioFactura colorFactura={colorFactura} logoFactura={logoFactura} />}
-          {vistaActiva === "historial" && <HistorialFacturas />}
-          {vistaActiva === "clientes" && <GestionClientes metodosPago={metodosPago} />}
-          {vistaActiva === "productos" && <GestionProductos />}
-          {vistaActiva === "diseno" && (
-            <DisenoFactura 
-              colorFactura={colorFactura} setColorFactura={setColorFactura}
-              logoFactura={logoFactura} setLogoFactura={setLogoFactura}
+          {vistaActiva === "dashboard" && (
+            <Dashboard setVistaActiva={setVistaActiva} clientes={clientes} productos={productos} facturas={facturas} />
+          )}
+          
+          {vistaActiva === "factura" && (
+            // La factura necesita ver a los clientes y productos para el autocompletado
+            <FormularioFactura 
+              colorFactura={colorFactura} logoFactura={logoFactura} 
+              clientes={clientes} productos={productos} facturas={facturas} setFacturas={setFacturas}
             />
           )}
+          
+          {vistaActiva === "historial" && (
+            <HistorialFacturas facturas={facturas} setFacturas={setFacturas} />
+          )}
+          
+          {vistaActiva === "clientes" && (
+            // Pasamos la DB de clientes y la función para modificarla
+            <GestionClientes clientes={clientes} setClientes={setClientes} metodosPago={metodosPago} />
+          )}
+          
+          {vistaActiva === "productos" && (
+             // Pasamos la DB de productos y la función para modificarla
+            <GestionProductos productos={productos} setProductos={setProductos} />
+          )}
+          
+          {vistaActiva === "diseno" && (
+            <DisenoFactura colorFactura={colorFactura} setColorFactura={setColorFactura} logoFactura={logoFactura} setLogoFactura={setLogoFactura} />
+          )}
+          
           {vistaActiva === "ajustes" && (
-            <AjustesImpuestos 
-              nombreApp={nombreApp} setNombreApp={setNombreApp}
-              subtituloApp={subtituloApp} setSubtituloApp={setSubtituloApp}
-              metodosPago={metodosPago} setMetodosPago={setMetodosPago}
-            />
+            <AjustesImpuestos nombreApp={nombreApp} setNombreApp={setNombreApp} subtituloApp={subtituloApp} setSubtituloApp={setSubtituloApp} metodosPago={metodosPago} setMetodosPago={setMetodosPago} />
           )}
         </div>
       </div>
