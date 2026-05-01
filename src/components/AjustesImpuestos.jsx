@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 
 // Recibimos las propiedades (props) desde App.jsx
-function AjustesImpuestos({ nombreApp, setNombreApp, metodosPago, setMetodosPago }) {
+function AjustesImpuestos({ nombreApp, setNombreApp, subtituloApp, setSubtituloApp, metodosPago, setMetodosPago }) {
   const [perfilActivo, setPerfilActivo] = useState("estandar");
   const [stdIva, setStdIva] = useState(21);
   const [stdIrpf, setStdIrpf] = useState(15);
@@ -52,6 +52,17 @@ function AjustesImpuestos({ nombreApp, setNombreApp, metodosPago, setMetodosPago
               className="w-full border border-gray-300 rounded-md p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
             />
             <p className="text-xs text-gray-500 mt-1">Este nombre aparecerá en el menú lateral.</p>
+          </div>
+
+          {/* Subtítulo del Programa */}
+          <div className="flex flex-col mt-4">
+            <label className="text-sm font-semibold text-gray-700 mb-2">Subtítulo de la Aplicación</label>
+            <input 
+              type="text" 
+              value={subtituloApp}
+              onChange={(e) => setSubtituloApp(e.target.value)}
+              className="w-full border border-gray-300 rounded-md p-2.5 focus:ring-2 focus:ring-blue-500 outline-none"
+            />
           </div>
 
           {/* Gestión de Métodos de Pago */}
