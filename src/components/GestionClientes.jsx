@@ -1,12 +1,14 @@
 import { useState } from "react";
+// Importamos los iconos
+import { UserPlus, X, Edit, Trash2, CreditCard } from "lucide-react";
 
 function GestionClientes() {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   
-  // Datos simulados (Mock data)
+  // Datos simulados (Mock data) actualizados con Método de Pago
   const [clientes, setClientes] = useState([
-    { COD_CLI: "C001", DNI: "12345678A", APELLIDOS: "García López", NOMBRE: "María", DIRECCION: "Calle Falsa 123", CP: "28001", CIUDAD: "Madrid", EMAIL: "maria@email.com", TELEFONO: "600123456", ALUMNO: "Hugo García" },
-    { COD_CLI: "C002", DNI: "87654321B", APELLIDOS: "Martínez", NOMBRE: "Carlos", DIRECCION: "Av. Principal 45", CP: "08002", CIUDAD: "Barcelona", EMAIL: "carlos@email.com", TELEFONO: "600987654", ALUMNO: "Carlos Martínez (Adulto)" }
+    { COD_CLI: "C001", DNI: "12345678A", APELLIDOS: "García López", NOMBRE: "María", DIRECCION: "Calle Falsa 123", CP: "28001", CIUDAD: "Madrid", EMAIL: "maria@email.com", TELEFONO: "600123456", ALUMNO: "Hugo García", METODO_PAGO: "Domiciliación" },
+    { COD_CLI: "C002", DNI: "87654321B", APELLIDOS: "Martínez", NOMBRE: "Carlos", DIRECCION: "Av. Principal 45", CP: "08002", CIUDAD: "Barcelona", EMAIL: "carlos@email.com", TELEFONO: "600987654", ALUMNO: "Carlos Martínez", METODO_PAGO: "Transferencia" }
   ]);
 
   return (
@@ -14,33 +16,61 @@ function GestionClientes() {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-800 mb-1">Base de Datos: Clientes</h1>
-          <p className="text-sm text-gray-600">Gestiona los padres/tutores y los alumnos de la academia.</p>
+          <p className="text-sm text-gray-600">Gestiona los padres/tutores, alumnos y sus formas de pago.</p>
         </div>
         <button 
           onClick={() => setMostrarFormulario(!mostrarFormulario)}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-sm transition-colors"
+          className={`flex items-center font-bold py-2.5 px-5 rounded-lg shadow-sm transition-colors ${
+            mostrarFormulario 
+              ? "bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300" 
+              : "bg-blue-600 hover:bg-blue-700 text-white"
+          }`}
         >
-          {mostrarFormulario ? "✕ Cancelar" : "+ Añadir Cliente"}
+          {mostrarFormulario ? (
+            <><X className="w-5 h-5 mr-2" /> Cancelar</>
+          ) : (
+            <><UserPlus className="w-5 h-5 mr-2" /> Añadir Cliente</>
+          )}
         </button>
       </div>
 
       {/* FORMULARIO PARA AÑADIR CLIENTE */}
       {mostrarFormulario && (
-        <div className="mb-8 p-6 bg-blue-50 border border-blue-100 rounded-lg">
-          <h3 className="font-bold text-blue-800 mb-4">Registrar Nuevo Cliente</h3>
+        <div className="mb-8 p-6 bg-blue-50/50 border border-blue-100 rounded-lg shadow-inner">
+          <h3 className="font-bold text-blue-800 mb-4 flex items-center">
+            <UserPlus className="w-5 h-5 mr-2" /> Registrar Nuevo Cliente
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
-            <div className="flex flex-col"><label className="font-semibold text-gray-700">Código</label><input type="text" className="border rounded p-2" placeholder="Ej. C003" /></div>
-            <div className="flex flex-col"><label className="font-semibold text-gray-700">DNI / NIF</label><input type="text" className="border rounded p-2" /></div>
-            <div className="flex flex-col"><label className="font-semibold text-gray-700">Nombre</label><input type="text" className="border rounded p-2" /></div>
-            <div className="flex flex-col"><label className="font-semibold text-gray-700">Apellidos</label><input type="text" className="border rounded p-2" /></div>
-            <div className="flex flex-col md:col-span-2"><label className="font-semibold text-gray-700">Dirección</label><input type="text" className="border rounded p-2" /></div>
-            <div className="flex flex-col"><label className="font-semibold text-gray-700">C.P.</label><input type="text" className="border rounded p-2" /></div>
-            <div className="flex flex-col"><label className="font-semibold text-gray-700">Ciudad</label><input type="text" className="border rounded p-2" /></div>
-            <div className="flex flex-col"><label className="font-semibold text-gray-700">Email</label><input type="email" className="border rounded p-2" /></div>
-            <div className="flex flex-col"><label className="font-semibold text-gray-700">Teléfono</label><input type="text" className="border rounded p-2" /></div>
-            <div className="flex flex-col md:col-span-2"><label className="font-semibold text-gray-700">Nombre del Alumno/a</label><input type="text" className="border rounded p-2" placeholder="¿Quién asiste a clase?" /></div>
+            <div className="flex flex-col"><label className="font-semibold text-gray-700 mb-1">Código</label><input type="text" className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Ej. C003" /></div>
+            <div className="flex flex-col"><label className="font-semibold text-gray-700 mb-1">DNI / NIF</label><input type="text" className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" /></div>
+            <div className="flex flex-col"><label className="font-semibold text-gray-700 mb-1">Nombre</label><input type="text" className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" /></div>
+            <div className="flex flex-col"><label className="font-semibold text-gray-700 mb-1">Apellidos</label><input type="text" className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" /></div>
+            <div className="flex flex-col md:col-span-2"><label className="font-semibold text-gray-700 mb-1">Dirección</label><input type="text" className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" /></div>
+            <div className="flex flex-col"><label className="font-semibold text-gray-700 mb-1">C.P.</label><input type="text" className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" /></div>
+            <div className="flex flex-col"><label className="font-semibold text-gray-700 mb-1">Ciudad</label><input type="text" className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" /></div>
+            <div className="flex flex-col"><label className="font-semibold text-gray-700 mb-1">Email</label><input type="email" className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" /></div>
+            <div className="flex flex-col"><label className="font-semibold text-gray-700 mb-1">Teléfono</label><input type="text" className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" /></div>
+            <div className="flex flex-col md:col-span-1"><label className="font-semibold text-gray-700 mb-1">Nombre del Alumno/a</label><input type="text" className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="¿Quién asiste?" /></div>
+            
+            {/* NUEVO CAMPO: MÉTODO DE PAGO */}
+            <div className="flex flex-col md:col-span-1">
+              <label className="font-semibold text-gray-700 mb-1 flex items-center">
+                <CreditCard className="w-4 h-4 mr-1 text-gray-500" /> Método de Pago
+              </label>
+              <select className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                <option value="Domiciliación">Domiciliación Bancaria</option>
+                <option value="Transferencia">Transferencia</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Tarjeta">Tarjeta (TPV)</option>
+              </select>
+            </div>
+
           </div>
-          <button className="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg">Guardar Cliente</button>
+          <div className="flex justify-end mt-6">
+            <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-sm transition-colors">
+              Guardar Cliente
+            </button>
+          </div>
         </div>
       )}
 
@@ -50,24 +80,40 @@ function GestionClientes() {
           <thead className="bg-gray-100 uppercase tracking-wider text-gray-600 text-xs font-semibold">
             <tr>
               <th className="px-4 py-3">Cód</th>
-              <th className="px-4 py-3">Cliente (Facturación)</th>
-              <th className="px-4 py-3">DNI</th>
+              <th className="px-4 py-3">Cliente / DNI</th>
               <th className="px-4 py-3">Alumno/a</th>
               <th className="px-4 py-3">Contacto</th>
+              <th className="px-4 py-3">Pago</th>
               <th className="px-4 py-3 text-right">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
             {clientes.map((cliente) => (
-              <tr key={cliente.COD_CLI} className="hover:bg-gray-50">
-                <td className="px-4 py-3 font-medium text-gray-900">{cliente.COD_CLI}</td>
-                <td className="px-4 py-3">{cliente.NOMBRE} {cliente.APELLIDOS}</td>
-                <td className="px-4 py-3 text-gray-500">{cliente.DNI}</td>
-                <td className="px-4 py-3 text-blue-600 font-medium">{cliente.ALUMNO}</td>
-                <td className="px-4 py-3 text-gray-500">{cliente.TELEFONO} <br/><span className="text-xs">{cliente.EMAIL}</span></td>
-                <td className="px-4 py-3 text-right">
-                  <button className="text-blue-600 hover:underline mr-3">Editar</button>
-                  <button className="text-red-600 hover:underline">Borrar</button>
+              <tr key={cliente.COD_CLI} className="hover:bg-gray-50 transition-colors">
+                <td className="px-4 py-4 font-medium text-gray-900">{cliente.COD_CLI}</td>
+                <td className="px-4 py-4">
+                  <div className="font-semibold text-gray-800">{cliente.NOMBRE} {cliente.APELLIDOS}</div>
+                  <div className="text-xs text-gray-500">{cliente.DNI}</div>
+                </td>
+                <td className="px-4 py-4 text-blue-700 font-medium">{cliente.ALUMNO}</td>
+                <td className="px-4 py-4">
+                  <div className="text-gray-700">{cliente.TELEFONO}</div>
+                  <div className="text-xs text-gray-500">{cliente.EMAIL}</div>
+                </td>
+                <td className="px-4 py-4">
+                  <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                    <CreditCard className="w-3 h-3 mr-1" /> {cliente.METODO_PAGO}
+                  </span>
+                </td>
+                <td className="px-4 py-4 text-right">
+                  <div className="flex justify-end gap-2">
+                    <button className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors" title="Editar">
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors" title="Eliminar">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
