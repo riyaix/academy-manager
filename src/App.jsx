@@ -22,6 +22,7 @@ function App() {
   // 1. Ajustes y Personalización
   const [nombreApp, setNombreApp] = useLocalStorage("app_nombre", "Academia PRO");
   const [subtituloApp, setSubtituloApp] = useLocalStorage("app_subtitulo", "Gestión & Pagos");
+  const [separadorDni, setSeparadorDni] = useLocalStorage("app_separador_dni", ".");
   const [metodosPago, setMetodosPago] = useLocalStorage("app_metodos", ["Domiciliación Bancaria", "Transferencia", "Efectivo", "Tarjeta (TPV)"]);
   const [colorFactura, setColorFactura] = useLocalStorage("app_color", "#2563eb");
   const [logoFactura, setLogoFactura] = useLocalStorage("app_logo", null);
