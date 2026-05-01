@@ -45,7 +45,7 @@ function AjustesImpuestos() {
             type="radio" 
             checked={perfilActivo === "estandar"} 
             onChange={() => setPerfilActivo("estandar")}
-            className="w-5 h-5 text-blue-600 focus:ring-blue-500 cursor-pointer flex-shrink-0"
+            className="w-5 h-5 text-blue-600 focus:ring-blue-500 cursor-pointer shrink-0"
           />
           <h2 className="ml-3 text-xl font-bold text-gray-800 m-0">Perfil Estándar (Recomendado)</h2>
         </div>
@@ -107,7 +107,7 @@ function AjustesImpuestos() {
             type="radio" 
             checked={perfilActivo === "personalizado"} 
             onChange={() => setPerfilActivo("personalizado")}
-            className="w-5 h-5 text-blue-600 focus:ring-blue-500 cursor-pointer flex-shrink-0"
+            className="w-5 h-5 text-blue-600 focus:ring-blue-500 cursor-pointer shrink-0"
           />
           <h2 className="ml-3 text-xl font-bold text-gray-800 m-0">Perfil Personalizado</h2>
         </div>
