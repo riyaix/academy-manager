@@ -9,7 +9,6 @@ import GestionClientes from "./components/GestionClientes";
 import GestionProductos from "./components/GestionProductos";
 import HistorialFacturas from "./components/HistorialFacturas";
 import DisenoFactura from "./components/DisenoFactura";
-// NUEVOS COMPONENTES
 import Calendario from "./components/Calendario";
 import GestionGrupos from "./components/GestionGrupos";
 
@@ -78,15 +77,12 @@ function App() {
       <div className="flex-1 overflow-y-auto p-4 md:p-6 flex flex-col">
         <div className="w-full flex-1">
           {vistaActiva === "dashboard" && <Dashboard setVistaActiva={setVistaActiva} clientes={clientes} productos={productos} facturas={facturas} />}
-          {vistaActiva === "factura" && <FormularioFactura colorFactura={colorFactura} logoFactura={logoFactura} clientes={clientes} productos={productos} facturas={facturas} setFacturas={setFacturas} />}
-          {vistaActiva === "historial" && <HistorialFacturas facturas={facturas} setFacturas={setFacturas} />}
+          {vistaActiva === "factura" && <FormularioFactura colorFactura={colorFactura} logoFactura={logoFactura} clientes={clientes} productos={productos} facturas={facturas} setFacturas={setFacturas} grupos={grupos} matriculas={matriculas} />}
+          {vistaActiva === "historial" && <HistorialFacturas facturas={facturas} setFacturas={setFacturas} clientes={clientes} colorFactura={colorFactura} logoFactura={logoFactura} />}
           {vistaActiva === "clientes" && <GestionClientes clientes={clientes} setClientes={setClientes} separadorDni={separadorDni} />}
           {vistaActiva === "productos" && <GestionProductos productos={productos} setProductos={setProductos} clientes={clientes} />}
-          
-          {/* NUEVAS RUTAS */}
           {vistaActiva === "grupos" && <GestionGrupos clientes={clientes} productos={productos} grupos={grupos} setGrupos={setGrupos} matriculas={matriculas} setMatriculas={setMatriculas} />}
           {vistaActiva === "calendario" && <Calendario grupos={grupos} matriculas={matriculas} productos={productos} />}
-
           {vistaActiva === "diseno" && <DisenoFactura colorFactura={colorFactura} setColorFactura={setColorFactura} logoFactura={logoFactura} setLogoFactura={setLogoFactura} />}
           {vistaActiva === "ajustes" && <AjustesImpuestos nombreApp={nombreApp} setNombreApp={setNombreApp} subtituloApp={subtituloApp} setSubtituloApp={setSubtituloApp} metodosPago={metodosPago} setMetodosPago={setMetodosPago} separadorDni={separadorDni} setSeparadorDni={setSeparadorDni} />}
         </div>
