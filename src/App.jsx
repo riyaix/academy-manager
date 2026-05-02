@@ -100,8 +100,7 @@ function App() {
           )}
           
           {vistaActiva === "productos" && (
-             // Pasamos la DB de productos y la función para modificarla
-            <GestionProductos productos={productos} setProductos={setProductos} />
+            <GestionProductos productos={productos} setProductos={setProductos} clientes={clientes} />
           )}
           
           {vistaActiva === "diseno" && (
