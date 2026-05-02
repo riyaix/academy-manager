@@ -1,14 +1,20 @@
 import { useState, useMemo } from "react";
-import { UserPlus, Edit, Trash2, ArrowUpDown } from "lucide-react";
+import { UserPlus, Edit, Trash2, ArrowUpDown, Search, Filter, Download } from "lucide-react";
 
-// Recibimos separadorDni por props (por defecto el punto)
 function GestionClientes({ clientes, setClientes, separadorDni = "." }) {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  
-  // Hemos separado el DNI en dniNumeros y dniLetra
-  const [nuevoCliente, setNuevoCliente] = useState({
-    dniNumeros: "", dniLetra: "", NOMBRE: "", APELLIDOS: "", DIRECCION: "", DIRECCION_PISO: "", CP: "", CIUDAD: "", EMAIL: "", TELEFONO: "", ALUMNO: "", NOTAS: ""
-  });
+  const [editandoId, setEditandoId] = useState(null);
+
+  const estadoInicialCliente = {
+    dniNumeros: "", dniLetra: "", NOMBRE: "", APELLIDOS: "", 
+    tipoVia: "C/", nombreVia: "", numero: "", 
+    portalAbrev: "Pta.", portalNum: "", pisoNum: "", pisoLetra: "",
+    CP: "", CIUDAD: "Badajoz", EMAIL: "", TELEFONO: "", ALUMNO: "", NOTAS: ""
+  };
+
+  const [nuevoCliente, setNuevoCliente] = useState(estadoInicialCliente);
+  const [busqueda, setBusqueda] = useState("");
+  const [seleccionados, setSeleccionados] = useState([]);
 
   const obtenerSiguienteId = () => {
     if (clientes.length === 0) return "C001";
@@ -16,19 +22,41 @@ function GestionClientes({ clientes, setClientes, separadorDni = "." }) {
     return `C${(ultimoNum + 1).toString().padStart(3, '0')}`;
   };
 
-  // --- LÓGICA INTELIGENTE DEL DNI ---
   const handleDniNumeros = (e) => {
-    // 1. Quitamos todo lo que no sean números y limitamos a 8 caracteres
     let valorLimpio = e.target.value.replace(/\D/g, "").slice(0, 8);
-    // 2. Aplicamos el separador (punto o guión) en los miles
     let valorFormateado = valorLimpio.replace(/\B(?=(\d{3})+(?!\d))/g, separadorDni);
     setNuevoCliente({ ...nuevoCliente, dniNumeros: valorFormateado });
   };
 
-  const handleDniLetra = (e) => {
-    // Forzamos a mayúscula siempre, limitando a 1 letra
-    setNuevoCliente({ ...nuevoCliente, dniLetra: e.target.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 1) });
+  const handleDniLetra = (e) => setNuevoCliente({ ...nuevoCliente, dniLetra: e.target.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 1) });
+  const handlePisoLetra = (e) => setNuevoCliente({ ...nuevoCliente, pisoLetra: e.target.value.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 2) });
+  
+  const handleTelefono = (e) => {
+    let tel = e.target.value.replace(/\D/g, "").slice(0, 9);
+    if (tel.length > 7) tel = tel.replace(/(\d{3})(\d{2})(\d{2})(\d{1,2})/, "$1 $2 $3 $4");
+    else if (tel.length > 5) tel = tel.replace(/(\d{3})(\d{2})(\d{1,2})/, "$1 $2 $3");
+    else if (tel.length > 3) tel = tel.replace(/(\d{3})(\d{1,2})/, "$1 $2");
+    setNuevoCliente({ ...nuevoCliente, TELEFONO: tel });
   };
+
+  const handleCP = (e) => {
+    let cp = e.target.value.replace(/\D/g, "").slice(0, 5);
+    let ciudad = nuevoCliente.CIUDAD;
+    if (cp.length >= 2) {
+      const prefijo = cp.substring(0, 2);
+      if (prefijo === "06") ciudad = "Badajoz";
+      else if (prefijo === "10") ciudad = "Cáceres";
+      else if (prefijo === "28") ciudad = "Madrid";
+      else if (prefijo === "08") ciudad = "Barcelona";
+      else if (prefijo === "41") ciudad = "Sevilla";
+      else if (prefijo === "46") ciudad = "Valencia";
+    } else if (cp.length === 0) {
+      ciudad = "Badajoz"; 
+    }
+    setNuevoCliente({ ...nuevoCliente, CP: cp, CIUDAD: ciudad });
+  };
+
+  const handleChange = (e) => setNuevoCliente({ ...nuevoCliente, [e.target.name]: e.target.value });
 
   const guardarCliente = () => {
     if (!nuevoCliente.NOMBRE || !nuevoCliente.APELLIDOS) {
@@ -36,57 +64,95 @@ function GestionClientes({ clientes, setClientes, separadorDni = "." }) {
       return;
     }
 
-    // Juntamos el DNI formateado con la letra para guardarlo en la base de datos
-    const dniCompleto = `${nuevoCliente.dniNumeros}-${nuevoCliente.dniLetra}`;
+    const dniCompleto = nuevoCliente.dniNumeros ? `${nuevoCliente.dniNumeros}-${nuevoCliente.dniLetra}` : "";
+    const direccionFormateada = `${nuevoCliente.tipoVia} ${nuevoCliente.nombreVia}` + (nuevoCliente.numero ? `, Nº ${nuevoCliente.numero}` : "");
+    let pisoFormateado = "";
+    if (nuevoCliente.portalNum) pisoFormateado += `${nuevoCliente.portalAbrev} ${nuevoCliente.portalNum} `;
+    if (nuevoCliente.pisoNum) pisoFormateado += `${nuevoCliente.pisoNum}º `;
+    if (nuevoCliente.pisoLetra) pisoFormateado += `${nuevoCliente.pisoLetra}`;
 
-    const clienteParaGuardar = {
+    const datosCliente = {
       ...nuevoCliente,
       DNI: dniCompleto,
-      COD_CLI: obtenerSiguienteId()
+      DIRECCION: direccionFormateada.trim(),
+      DIRECCION_PISO: pisoFormateado.trim(),
     };
 
-    setClientes([...clientes, clienteParaGuardar]);
-    setMostrarFormulario(false);
-    // Reseteamos el estado
-    setNuevoCliente({ dniNumeros: "", dniLetra: "", NOMBRE: "", APELLIDOS: "", DIRECCION: "", DIRECCION_PISO: "", CP: "", CIUDAD: "", EMAIL: "", TELEFONO: "", ALUMNO: "", NOTAS: "" });
+    if (editandoId) {
+      setClientes(clientes.map(c => c.COD_CLI === editandoId ? { ...datosCliente, COD_CLI: editandoId } : c));
+    } else {
+      setClientes([...clientes, { ...datosCliente, COD_CLI: obtenerSiguienteId() }]);
+    }
+
+    cerrarFormulario();
   };
 
-  const eliminarCliente = (id) => {
-    if (confirm("¿Estás seguro de que deseas eliminar este cliente?")) {
-      setClientes(clientes.filter(c => c.COD_CLI !== id));
+  const cerrarFormulario = () => {
+    setMostrarFormulario(false);
+    setEditandoId(null);
+    setNuevoCliente(estadoInicialCliente);
+  };
+
+  const handleEditar = () => {
+    if (seleccionados.length !== 1) return;
+    const clienteAEditar = clientes.find(c => c.COD_CLI === seleccionados[0]);
+    if (clienteAEditar) {
+      setNuevoCliente(clienteAEditar);
+      setEditandoId(clienteAEditar.COD_CLI);
+      setMostrarFormulario(true);
     }
   };
 
-  const handleChange = (e) => {
-    setNuevoCliente({ ...nuevoCliente, [e.target.name]: e.target.value });
+  const handleEliminar = () => {
+    if (seleccionados.length === 0) return;
+    if (confirm(`¿Estás seguro de que deseas eliminar ${seleccionados.length} cliente(s)?`)) {
+      setClientes(clientes.filter(c => !seleccionados.includes(c.COD_CLI)));
+      setSeleccionados([]);
+    }
   };
 
-  // --- LÓGICA DE ORDENACIÓN ---
+  const toggleSeleccionarTodo = (e) => {
+    if (e.target.checked) setSeleccionados(clientesMostrar.map(c => c.COD_CLI));
+    else setSeleccionados([]);
+  };
+
+  const toggleSeleccionarUnico = (id) => {
+    if (seleccionados.includes(id)) setSeleccionados(seleccionados.filter(s => s !== id));
+    else setSeleccionados([...seleccionados, id]);
+  };
+
   const [sortConfig, setSortConfig] = useState({ key: "COD_CLI", direction: "ascending" });
 
   const solicitarOrden = (key) => {
     let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
+    if (sortConfig.key === key && sortConfig.direction === "ascending") direction = "descending";
     setSortConfig({ key, direction });
   };
 
-  const clientesOrdenados = useMemo(() => {
-    let sortableItems = [...clientes];
+  const clientesMostrar = useMemo(() => {
+    let filtrados = clientes;
+    if (busqueda) {
+      const b = busqueda.toLowerCase();
+      filtrados = clientes.filter(c => 
+        c.NOMBRE.toLowerCase().includes(b) || 
+        c.APELLIDOS.toLowerCase().includes(b) || 
+        (c.DNI && c.DNI.toLowerCase().includes(b)) ||
+        (c.ALUMNO && c.ALUMNO.toLowerCase().includes(b))
+      );
+    }
     if (sortConfig.key !== null) {
-      sortableItems.sort((a, b) => {
+      filtrados.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) return sortConfig.direction === "ascending" ? -1 : 1;
         if (a[sortConfig.key] > b[sortConfig.key]) return sortConfig.direction === "ascending" ? 1 : -1;
         return 0;
       });
     }
-    return sortableItems;
-  }, [clientes, sortConfig]);
+    return filtrados;
+  }, [clientes, busqueda, sortConfig]);
 
   const SortableHeader = ({ label, sortKey }) => (
     <th className="px-4 py-4 cursor-pointer hover:bg-gray-200 transition-colors group" onClick={() => solicitarOrden(sortKey)}>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 text-gray-700">
         {label}
         <ArrowUpDown className={`w-3 h-3 ${sortConfig.key === sortKey ? "text-blue-600" : "text-gray-400 group-hover:text-gray-600"}`} />
       </div>
@@ -94,98 +160,248 @@ function GestionClientes({ clientes, setClientes, separadorDni = "." }) {
   );
 
   return (
-    // Hemos añadido min-h-[85vh] y flex-col para que ocupe toda la pantalla de forma elegante
     <div className="bg-white w-full p-6 md:p-8 rounded-xl shadow-sm border border-gray-200 flex flex-col min-h-[85vh]">
       
-      {/* CABECERA DE LA PÁGINA */}
+      {/* CABECERA */}
       <div className="flex justify-between items-center mb-6 shrink-0">
         <div>
           <h1 className="text-2xl font-bold text-gray-800 mb-1">Base de Datos: Clientes</h1>
           <p className="text-sm text-gray-600">Gestiona los padres/tutores, alumnos y su información de contacto.</p>
         </div>
         {!mostrarFormulario && (
-          <button onClick={() => setMostrarFormulario(true)} className="flex items-center font-bold py-2.5 px-5 rounded-lg shadow-sm transition-colors bg-blue-600 hover:bg-blue-700 text-white">
+          <button 
+            onClick={() => { setEditandoId(null); setNuevoCliente(estadoInicialCliente); setMostrarFormulario(true); }} 
+            className="flex items-center font-bold py-2.5 px-5 rounded-lg shadow-sm transition-colors bg-blue-600 hover:bg-blue-700 text-white"
+          >
             <UserPlus className="w-5 h-5 mr-2" /> Añadir Cliente
           </button>
         )}
       </div>
 
-      {/* FORMULARIO DE CLIENTE */}
+      {/* FORMULARIO */}
       {mostrarFormulario && (
         <div className="mb-6 p-6 bg-blue-50/50 border border-blue-100 rounded-lg shadow-inner shrink-0">
-          <h3 className="font-bold text-blue-800 mb-4 flex items-center"><UserPlus className="w-5 h-5 mr-2" /> Registrar Nuevo Cliente</h3>
+          <h3 className="font-bold text-blue-800 mb-4 flex items-center">
+            {editandoId ? <Edit className="w-5 h-5 mr-2" /> : <UserPlus className="w-5 h-5 mr-2" />}
+            {editandoId ? `Editando Cliente: ${editandoId}` : "Registrar Nuevo Cliente"}
+          </h3>
+          
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 text-sm">
             
-            <div className="flex flex-col"><label className="font-semibold text-gray-700 mb-1">Código</label>
-              <input type="text" value={obtenerSiguienteId()} disabled className="border border-gray-200 rounded p-2 bg-gray-100 text-gray-500 cursor-not-allowed font-mono" />
+            <div className="flex flex-col">
+              <label className="font-semibold text-gray-700 mb-1">Código</label>
+              <input 
+                type="text" 
+                value={editandoId || obtenerSiguienteId()} 
+                disabled 
+                className="border border-gray-200 rounded p-2 bg-gray-100 text-gray-500 cursor-not-allowed font-mono" 
+              />
             </div>
             
-            {/* DNI PARTIDO EN DOS (Números y Letra) */}
-            <div className="flex flex-col md:col-span-2">
+            <div className="flex flex-col md:col-span-1">
               <label className="font-semibold text-gray-700 mb-1">DNI / NIF</label>
-              <div className="flex gap-2">
+              <div className="flex gap-1">
                 <input 
                   type="text" 
                   value={nuevoCliente.dniNumeros} 
                   onChange={handleDniNumeros} 
-                  placeholder="Ej. 12.345.678"
-                  className="flex-1 border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none font-mono" 
+                  placeholder="12.345.678" 
+                  className="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none font-mono text-center" 
                 />
                 <span className="text-gray-400 flex items-center">-</span>
                 <input 
                   type="text" 
                   value={nuevoCliente.dniLetra} 
                   onChange={handleDniLetra} 
-                  placeholder="X"
-                  className="w-12 border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-center font-bold uppercase" 
+                  placeholder="X" 
+                  className="w-10 border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-center font-bold uppercase" 
                 />
               </div>
             </div>
 
-            <div className="flex flex-col md:col-span-1"><label className="font-semibold text-gray-700 mb-1">Nombre</label>
-              <input type="text" name="NOMBRE" value={nuevoCliente.NOMBRE} onChange={handleChange} className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" />
-            </div>
-            <div className="flex flex-col md:col-span-1"><label className="font-semibold text-gray-700 mb-1">Apellidos</label>
-              <input type="text" name="APELLIDOS" value={nuevoCliente.APELLIDOS} onChange={handleChange} className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" />
+            <div className="flex flex-col md:col-span-1">
+              <label className="font-semibold text-gray-700 mb-1">Nombre</label>
+              <input 
+                type="text" 
+                name="NOMBRE" 
+                value={nuevoCliente.NOMBRE} 
+                onChange={handleChange} 
+                className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" 
+              />
             </div>
 
-            <div className="flex flex-col md:col-span-2"><label className="font-semibold text-gray-700 mb-1">Dirección (Calle, Avda...)</label>
-              <input type="text" name="DIRECCION" value={nuevoCliente.DIRECCION} onChange={handleChange} className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Ej. Calle Mayor, 12" />
+            <div className="flex flex-col md:col-span-2">
+              <label className="font-semibold text-gray-700 mb-1">Apellidos</label>
+              <input 
+                type="text" 
+                name="APELLIDOS" 
+                value={nuevoCliente.APELLIDOS} 
+                onChange={handleChange} 
+                className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" 
+              />
+            </div>
+
+            <div className="flex flex-col md:col-span-1">
+              <label className="font-semibold text-gray-700 mb-1">Tipo de Vía</label>
+              <select 
+                name="tipoVia" 
+                value={nuevoCliente.tipoVia} 
+                onChange={handleChange} 
+                className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+              >
+                <option value="C/">C/ (Calle)</option>
+                <option value="Av.">Av. (Avenida)</option>
+                <option value="Pl.">Pl. (Plaza)</option>
+                <option value="Pº">Pº (Paseo)</option>
+                <option value="Ctra.">Ctra. (Carretera)</option>
+                <option value="Cam.">Cam. (Camino)</option>
+              </select>
             </div>
             
-            {/* NUEVO NOMBRE OFICIAL PARA PISO/PUERTA */}
-            <div className="flex flex-col md:col-span-2"><label className="font-semibold text-gray-700 mb-1">Escalera / Planta / Puerta</label>
-              <input type="text" name="DIRECCION_PISO" value={nuevoCliente.DIRECCION_PISO} onChange={handleChange} className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Ej. Esc. Izq, Planta 3, Pta B" />
+            <div className="flex flex-col md:col-span-3">
+              <label className="font-semibold text-gray-700 mb-1">Nombre de la Vía</label>
+              <input 
+                type="text" 
+                name="nombreVia" 
+                value={nuevoCliente.nombreVia} 
+                onChange={handleChange} 
+                className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" 
+                placeholder="Ej. Mayor" 
+              />
             </div>
 
-            <div className="flex flex-col md:col-span-1"><label className="font-semibold text-gray-700 mb-1">C.P.</label>
-              <input type="text" name="CP" value={nuevoCliente.CP} onChange={handleChange} className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" />
+            <div className="flex flex-col md:col-span-1">
+              <label className="font-semibold text-gray-700 mb-1">Número</label>
+              <div className="flex">
+                <span className="bg-gray-100 border border-r-0 border-gray-300 rounded-l p-2 text-gray-500 font-semibold select-none">Nº</span>
+                <input 
+                  type="text" 
+                  name="numero" 
+                  value={nuevoCliente.numero} 
+                  onChange={handleChange} 
+                  className="w-full border border-gray-300 rounded-r p-2 focus:ring-2 focus:ring-blue-500 outline-none" 
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col"><label className="font-semibold text-gray-700 mb-1">Ciudad</label>
-              <input type="text" name="CIUDAD" value={nuevoCliente.CIUDAD} onChange={handleChange} className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" />
+            <div className="flex flex-col md:col-span-1">
+              <label className="font-semibold text-gray-700 mb-1">Portal / Puerta</label>
+              <div className="flex">
+                <select 
+                  name="portalAbrev" 
+                  value={nuevoCliente.portalAbrev} 
+                  onChange={handleChange} 
+                  className="bg-gray-50 border border-r-0 border-gray-300 rounded-l p-2 outline-none focus:ring-2 focus:ring-blue-500 text-xs"
+                >
+                  <option value="Pta.">Pta.</option>
+                  <option value="P.">P.</option>
+                  <option value="Esc.">Esc.</option>
+                  <option value="Blq.">Blq.</option>
+                </select>
+                <input 
+                  type="text" 
+                  name="portalNum" 
+                  value={nuevoCliente.portalNum} 
+                  onChange={handleChange} 
+                  className="w-full border border-gray-300 rounded-r p-2 focus:ring-2 focus:ring-blue-500 outline-none" 
+                />
+              </div>
             </div>
-            <div className="flex flex-col md:col-span-2"><label className="font-semibold text-gray-700 mb-1">Email</label>
-              <input type="email" name="EMAIL" value={nuevoCliente.EMAIL} onChange={handleChange} className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" />
+
+            <div className="flex flex-col md:col-span-1">
+              <label className="font-semibold text-gray-700 mb-1">Piso / Letra</label>
+              <div className="flex">
+                <input 
+                  type="text" 
+                  name="pisoNum" 
+                  value={nuevoCliente.pisoNum} 
+                  onChange={handleChange} 
+                  className="w-1/2 border border-r-0 border-gray-300 rounded-l p-2 outline-none text-center focus:ring-2 focus:ring-blue-500" 
+                  placeholder="Ej. 3" 
+                />
+                <span className="bg-gray-100 border-y border-gray-300 p-2 text-gray-500 font-semibold select-none">º</span>
+                <input 
+                  type="text" 
+                  name="pisoLetra" 
+                  value={nuevoCliente.pisoLetra} 
+                  onChange={handlePisoLetra} 
+                  className="w-1/2 border border-l-0 border-gray-300 rounded-r p-2 outline-none text-center uppercase font-bold focus:ring-2 focus:ring-blue-500" 
+                  placeholder="B" 
+                />
+              </div>
             </div>
-            <div className="flex flex-col"><label className="font-semibold text-gray-700 mb-1">Teléfono</label>
-              <input type="text" name="TELEFONO" value={nuevoCliente.TELEFONO} onChange={handleChange} className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" />
+
+            <div className="flex flex-col md:col-span-1">
+              <label className="font-semibold text-gray-700 mb-1">C.P.</label>
+              <input 
+                type="text" 
+                name="CP" 
+                value={nuevoCliente.CP} 
+                onChange={handleCP} 
+                className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" 
+                placeholder="06001" 
+              />
             </div>
-            <div className="flex flex-col"><label className="font-semibold text-gray-700 mb-1">Nombre Alumno/a</label>
-              <input type="text" name="ALUMNO" value={nuevoCliente.ALUMNO} onChange={handleChange} className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" />
+
+            <div className="flex flex-col md:col-span-2">
+              <label className="font-semibold text-gray-700 mb-1">Ciudad</label>
+              <input 
+                type="text" 
+                name="CIUDAD" 
+                value={nuevoCliente.CIUDAD} 
+                onChange={handleChange} 
+                className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" 
+              />
+            </div>
+
+            <div className="flex flex-col md:col-span-2">
+              <label className="font-semibold text-gray-700 mb-1">Email</label>
+              <input 
+                type="email" 
+                name="EMAIL" 
+                value={nuevoCliente.EMAIL} 
+                onChange={handleChange} 
+                className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" 
+              />
+            </div>
+
+            <div className="flex flex-col md:col-span-1">
+              <label className="font-semibold text-gray-700 mb-1">Teléfono</label>
+              <input 
+                type="text" 
+                name="TELEFONO" 
+                value={nuevoCliente.TELEFONO} 
+                onChange={handleTelefono} 
+                placeholder="600 12 34 56" 
+                className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none text-center font-mono" 
+              />
+            </div>
+
+            <div className="flex flex-col md:col-span-2">
+              <label className="font-semibold text-gray-700 mb-1">Nombre Alumno/a</label>
+              <input 
+                type="text" 
+                name="ALUMNO" 
+                value={nuevoCliente.ALUMNO} 
+                onChange={handleChange} 
+                className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" 
+              />
             </div>
             
             <div className="flex flex-col md:col-span-5 mt-2">
               <label className="font-semibold text-gray-700 mb-1">Notas / Observaciones</label>
-              <textarea name="NOTAS" value={nuevoCliente.NOTAS} onChange={handleChange} className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none resize-y min-h-[60px]"></textarea>
+              <textarea 
+                name="NOTAS" 
+                value={nuevoCliente.NOTAS} 
+                onChange={handleChange} 
+                className="border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none resize-y min-h-[60px]"
+              ></textarea>
             </div>
-
           </div>
           
-          {/* BOTONES DE ACCIÓN (Juntos y a la derecha) */}
           <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-blue-100">
             <button 
-              onClick={() => setMostrarFormulario(false)} 
+              onClick={cerrarFormulario} 
               className="bg-white border border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 font-bold py-2 px-6 rounded-lg transition-colors"
             >
               Cancelar
@@ -194,58 +410,116 @@ function GestionClientes({ clientes, setClientes, separadorDni = "." }) {
               onClick={guardarCliente} 
               className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-sm transition-colors"
             >
-              Guardar Cliente
+              {editandoId ? "Actualizar Cliente" : "Guardar Cliente"}
             </button>
           </div>
         </div>
       )}
 
-      {/* CONTENEDOR DE LA TABLA (Con flex-1 para que se expanda y padding-bottom para el scroll) */}
-      <div className="flex-1 overflow-x-auto overflow-y-auto rounded-lg border border-gray-200 pb-2">
+      {/* --- TOOLBAR --- */}
+      <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4 shrink-0">
+        <div className="relative w-full md:w-96">
+          <Search className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+          <input 
+            type="text" 
+            placeholder="Buscar por nombre, DNI o alumno..." 
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+          />
+        </div>
+        
+        <div className="flex gap-2 w-full md:w-auto">
+          <button 
+            onClick={handleEditar}
+            disabled={seleccionados.length !== 1}
+            className={`flex items-center px-4 py-2 rounded-lg font-semibold transition-colors border ${
+              seleccionados.length === 1 ? "bg-white text-blue-600 border-blue-200 hover:bg-blue-50" : "bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed"
+            }`}
+          >
+            <Edit className="w-4 h-4 mr-2" /> Editar
+          </button>
+
+          <button 
+            onClick={handleEliminar}
+            disabled={seleccionados.length === 0}
+            className={`flex items-center px-4 py-2 rounded-lg font-semibold transition-colors border ${
+              seleccionados.length > 0 ? "bg-white text-red-600 border-red-200 hover:bg-red-50" : "bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed"
+            }`}
+          >
+            <Trash2 className="w-4 h-4 mr-2" /> Eliminar {seleccionados.length > 0 && `(${seleccionados.length})`}
+          </button>
+
+          <button className="flex items-center px-3 py-2 rounded-lg font-semibold text-gray-600 bg-white border border-gray-300 hover:bg-gray-50 transition-colors">
+            <Filter className="w-4 h-4" />
+          </button>
+          <button className="flex items-center px-3 py-2 rounded-lg font-semibold text-gray-600 bg-white border border-gray-300 hover:bg-gray-50 transition-colors">
+            <Download className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* TABLA DE CLIENTES */}
+      <div className="flex-1 overflow-x-auto overflow-y-auto rounded-lg border border-gray-200">
         <table className="min-w-max w-full text-left text-sm whitespace-nowrap">
           <thead className="bg-gray-100 uppercase tracking-wider text-gray-600 text-xs font-semibold select-none sticky top-0 z-10 shadow-sm">
             <tr>
+              <th className="px-4 py-4 w-10">
+                <input 
+                  type="checkbox" 
+                  checked={seleccionados.length === clientesMostrar.length && clientesMostrar.length > 0}
+                  onChange={toggleSeleccionarTodo}
+                  className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"
+                />
+              </th>
               <SortableHeader label="Cód" sortKey="COD_CLI" />
               <SortableHeader label="Nombre" sortKey="NOMBRE" />
               <SortableHeader label="Apellidos" sortKey="APELLIDOS" />
               <SortableHeader label="DNI" sortKey="DNI" />
               <SortableHeader label="Alumno/a" sortKey="ALUMNO" />
               <SortableHeader label="Dirección" sortKey="DIRECCION" />
-              <SortableHeader label="Esc/Pl/Pta" sortKey="DIRECCION_PISO" />
+              <SortableHeader label="Detalles Piso" sortKey="DIRECCION_PISO" />
               <SortableHeader label="CP" sortKey="CP" />
               <SortableHeader label="Ciudad" sortKey="CIUDAD" />
               <SortableHeader label="Email" sortKey="EMAIL" />
               <SortableHeader label="Teléfono" sortKey="TELEFONO" />
               <SortableHeader label="Notas" sortKey="NOTAS" />
-              <th className="px-4 py-4 text-right">Acciones</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {clientes.length === 0 ? (
-              <tr><td colSpan="13" className="px-4 py-8 text-center text-gray-500">No hay clientes registrados.</td></tr>
+            {clientesMostrar.length === 0 ? (
+              <tr>
+                <td colSpan="13" className="px-4 py-8 text-center text-gray-500">
+                  No se encontraron clientes.
+                </td>
+              </tr>
             ) : (
-              clientesOrdenados.map((cliente) => (
-                <tr key={cliente.COD_CLI} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-4 py-3 font-medium text-gray-900">{cliente.COD_CLI}</td>
-                  <td className="px-4 py-3 font-semibold text-gray-800">{cliente.NOMBRE}</td>
-                  <td className="px-4 py-3 text-gray-800">{cliente.APELLIDOS}</td>
-                  <td className="px-4 py-3 text-gray-600 font-mono text-xs">{cliente.DNI}</td>
+              clientesMostrar.map((cliente) => (
+                <tr 
+                  key={cliente.COD_CLI} 
+                  className={`transition-colors ${seleccionados.includes(cliente.COD_CLI) ? "bg-blue-50" : "hover:bg-gray-50"}`}
+                >
+                  <td className="px-4 py-3">
+                    <input 
+                      type="checkbox" 
+                      checked={seleccionados.includes(cliente.COD_CLI)}
+                      onChange={() => toggleSeleccionarUnico(cliente.COD_CLI)}
+                      className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"
+                    />
+                  </td>
+                  <td className="px-4 py-3 font-bold text-gray-900">{cliente.COD_CLI}</td>
+                  <td className="px-4 py-3 text-gray-700">{cliente.NOMBRE}</td>
+                  <td className="px-4 py-3 text-gray-700">{cliente.APELLIDOS}</td>
+                  <td className="px-4 py-3 text-gray-700">{cliente.DNI}</td>
                   <td className="px-4 py-3 text-blue-700 font-medium">{cliente.ALUMNO}</td>
-                  <td className="px-4 py-3 text-gray-600">{cliente.DIRECCION}</td>
-                  <td className="px-4 py-3 text-gray-600">{cliente.DIRECCION_PISO}</td>
-                  <td className="px-4 py-3 text-gray-600">{cliente.CP}</td>
-                  <td className="px-4 py-3 text-gray-600">{cliente.CIUDAD}</td>
-                  <td className="px-4 py-3 text-gray-600">{cliente.EMAIL}</td>
-                  <td className="px-4 py-3 text-gray-600">{cliente.TELEFONO}</td>
+                  <td className="px-4 py-3 text-gray-700">{cliente.DIRECCION}</td>
+                  <td className="px-4 py-3 text-gray-700">{cliente.DIRECCION_PISO}</td>
+                  <td className="px-4 py-3 text-gray-700">{cliente.CP}</td>
+                  <td className="px-4 py-3 text-gray-700">{cliente.CIUDAD}</td>
+                  <td className="px-4 py-3 text-gray-700">{cliente.EMAIL}</td>
+                  <td className="px-4 py-3 text-gray-700">{cliente.TELEFONO}</td>
                   <td className="px-4 py-3 text-gray-500 max-w-[150px] truncate" title={cliente.NOTAS}>
                     {cliente.NOTAS}
-                  </td>
-                  {/* Hemos quitado el sticky right-0 para evitar solapamientos */}
-                  <td className="px-4 py-3 text-right">
-                    <div className="flex justify-end gap-2">
-                      <button className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"><Edit className="w-4 h-4" /></button>
-                      <button onClick={() => eliminarCliente(cliente.COD_CLI)} className="p-1.5 text-red-600 hover:bg-red-50 rounded"><Trash2 className="w-4 h-4" /></button>
-                    </div>
                   </td>
                 </tr>
               ))
