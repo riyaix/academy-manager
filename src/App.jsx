@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { LayoutDashboard, FileText, Archive, Users, GraduationCap, Settings, Palette } from "lucide-react";
-// Importamos nuestra nueva base de datos
+import { LayoutDashboard, FileText, Archive, Users, GraduationCap, Settings, Palette, CalendarDays } from "lucide-react";// Importamos nuestra nueva base de datos
 import { useLocalStorage } from "./hooks/useLocalStorage";
 
 import Dashboard from "./components/Dashboard";
@@ -8,6 +7,7 @@ import FormularioFactura from "./components/FormularioFactura";
 import AjustesImpuestos from "./components/AjustesImpuestos";
 import GestionClientes from "./components/GestionClientes";
 import GestionProductos from "./components/GestionProductos";
+import CalendarioClases from "./components/CalendarioClases"
 import HistorialFacturas from "./components/HistorialFacturas";
 import DisenoFactura from "./components/DisenoFactura";
 
@@ -31,6 +31,8 @@ function App() {
   const [clientes, setClientes] = useLocalStorage("db_clientes", []);
   const [productos, setProductos] = useLocalStorage("db_productos", []);
   const [facturas, setFacturas] = useLocalStorage("db_facturas", []);
+  const [grupos, setGrupos] = useLocalStorage("db_grupos", []);
+  const [matriculas, setMatriculas] = useLocalStorage("db_matriculas", []);
 
   const NavButton = ({ id, icon: Icon, text }) => (
     <button 
@@ -68,6 +70,7 @@ function App() {
           
           <NavButton id="clientes" icon={Users} text="Alumnos / Clientes" />
           <NavButton id="productos" icon={GraduationCap} text="Cursos / Cuotas" />
+          <NavButton id="calendario" icon={CalendarDays} text="Calendario & Clases" />
           <div className="border-t border-gray-700/50 my-4 pt-2"></div>
           
           <NavButton id="diseno" icon={Palette} text="Diseño de Factura" />
@@ -101,6 +104,16 @@ function App() {
           
           {vistaActiva === "productos" && (
             <GestionProductos productos={productos} setProductos={setProductos} clientes={clientes} />
+          )}
+
+
+          {vistaActiva === "calendario" && (
+            <CalendarioClases 
+              clientes={clientes} 
+              productos={productos} 
+              grupos={grupos} setGrupos={setGrupos}
+              matriculas={matriculas} setMatriculas={setMatriculas}
+            />
           )}
           
           {vistaActiva === "diseno" && (
