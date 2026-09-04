@@ -1,0 +1,28 @@
+---
+description: Strict Semantic Versioning and commit conventions
+alwaysApply: true
+---
+
+# Version Control (Strict SemVer)
+
+Follow [SemVer 2.0.0](https://semver.org/): `MAJOR.MINOR.PATCH` (e.g. `v0.1.0`).
+
+| Bump | When |
+|------|------|
+| **PATCH** | Bug fixes, i18n tweaks; no schema/API change |
+| **MINOR** | New features; backward-compatible migrations |
+| **MAJOR** | Breaking migrations, removed features, incompatible backups |
+
+Pre-1.0.0 (`0.x.y`) is expected while evolving — still bump deliberately.
+
+## Sync versions across
+
+- `package.json`
+- `src-tauri/tauri.conf.json`
+- `CHANGELOG.md`
+
+## Commits
+
+Conventional commits: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`
+
+**One logical change per commit** — do not bundle unrelated refactors with features.

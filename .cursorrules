@@ -1,0 +1,21 @@
+# Facturador rules moved to .cursor/rules/
+
+Cursor loads project rules from `.cursor/rules/*.mdc`:
+
+| File | Scope |
+|------|--------|
+| `facturador-core.mdc` | Product principles, boundaries (always on) |
+| `architecture.mdc` | Modules, folders, feature checklist (always on) |
+| `typescript-react.mdc` | TS/React, semantic names, atomic components |
+| `ui-ux-theming.mdc` | OKLCH, dark/light, i18n, icons, intuitive UX |
+| `semver-versioning.mdc` | Strict SemVer + conventional commits (always on) |
+
+## Icons (no emojis)
+
+**Never use emojis** in UI, i18n strings, or comments. Use **[lucide-react](https://lucide.dev)** icons only:
+
+- Nav, buttons, badges, status pills, empty states → Lucide component (`<CheckCircle />`, `<X />`, …)
+- Icon-only controls → `aria-label` via i18n
+- Native `<select>` options → plain translated text (no inline icons)
+
+Full plan: `docs/product/PLAN.md` · Audit: `docs/product/ANALISIS.md` · Desktop/a11y: `docs/analysis/desktop-readiness-and-accessibility.md`
