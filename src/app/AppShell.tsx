@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { type LucideIcon, HelpCircle } from "lucide-react";
+import { type LucideIcon, HelpCircle, Search } from "lucide-react";
 import { ThemeToggle } from "../core/components/ThemeToggle";
 import { useWindowTitle } from "../core/hooks/useWindowTitle";
 import { useKeyboardShortcuts } from "../core/hooks/useKeyboardShortcuts";
@@ -34,6 +34,25 @@ function NavButton({ id, icon: Icon, label, activeView, onNavigate }: NavButtonP
           ? "bg-[var(--color-sidebar-accent)] text-[var(--color-sidebar)] shadow-md"
           : "text-[var(--color-sidebar-text)] hover:bg-[var(--color-sidebar-elevated)]"
       }`}
+    >
+      <Icon className="w-5 h-5 mr-3 shrink-0 opacity-90" strokeWidth={2} aria-hidden />
+      {label}
+    </button>
+  );
+}
+
+type ActionNavButtonProps = {
+  icon: LucideIcon;
+  label: string;
+  onClick: () => void;
+};
+
+function ActionNavButton({ icon: Icon, label, onClick }: ActionNavButtonProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="w-full flex items-center px-4 py-3 min-h-[44px] rounded-lg transition-colors font-medium cursor-pointer text-[var(--color-sidebar-text)] hover:bg-[var(--color-sidebar-elevated)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-sidebar-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-sidebar)]"
     >
       <Icon className="w-5 h-5 mr-3 shrink-0 opacity-90" strokeWidth={2} aria-hidden />
       {label}
@@ -171,6 +190,11 @@ export function AppShell() {
           {renderNavSection("billing")}
           {renderNavSection("academy")}
           {renderNavSection("config")}
+          <ActionNavButton
+            icon={Search}
+            label={t("nav.search")}
+            onClick={() => setShowSearch(true)}
+          />
         </nav>
 
         <div className="shrink-0 border-t border-[var(--color-sidebar-border)] px-4 pt-3 pb-4 space-y-1">

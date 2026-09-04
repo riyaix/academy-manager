@@ -8,7 +8,8 @@
     "courses": "Course Catalog",
     "groups": "Groups & Enrollments",
     "calendar": "Calendar",
-    "settings": "General Settings"
+    "settings": "General Settings",
+    "search": "Search"
   },
   "language": {
     "label": "Language",

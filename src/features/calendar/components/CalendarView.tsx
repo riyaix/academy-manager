@@ -17,6 +17,10 @@ import {
   isHexColor,
   resolveGroupColorClass,
 } from "../../../core/theme/groupColors";
+import {
+  formatFriendlyLongDate,
+  isSameCalendarDay,
+} from "../formatCalendarDate";
 
 type CalendarViewMode = "diaria" | "semanal" | "mensual";
 type CalendarShift = "mañana" | "tarde";
@@ -74,7 +78,11 @@ export function CalendarView({ initialView = "semanal" }: CalendarViewProps) {
     setFechaBase(nuevaFecha);
   };
 
-  const formatearFechaStr = (date: Date) =>
+  const today = new Date();
+
+  const formatearFechaStr = (date: Date) => formatFriendlyLongDate(date, locale);
+
+  const formatearFechaCorta = (date: Date) =>
     `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}/${date.getFullYear()}`;
 
   const cambiarFechaDirecta = (e: ChangeEvent<HTMLInputElement>) => {
@@ -197,16 +205,13 @@ export function CalendarView({ initialView = "semanal" }: CalendarViewProps) {
             {vistaCalendario === "mensual" &&
               fechaBase
                 .toLocaleDateString(locale, { month: "long", year: "numeric" })
-                .toUpperCase()}
+                .replace(/^./, (char) => char.toUpperCase())}
             {vistaCalendario === "semanal" &&
               t("calendar.weekRange", {
-                from: formatearFechaStr(diasSemanaActual[0]),
-                to: formatearFechaStr(diasSemanaActual[6]),
+                from: formatearFechaCorta(diasSemanaActual[0]),
+                to: formatearFechaCorta(diasSemanaActual[6]),
               })}
-            {vistaCalendario === "diaria" &&
-              fechaBase
-                .toLocaleDateString(locale, { weekday: "long", day: "numeric", month: "long" })
-                .toUpperCase()}
+            {vistaCalendario === "diaria" && formatearFechaStr(fechaBase)}
 
             <input
               ref={dateInputRef}
@@ -273,14 +278,26 @@ export function CalendarView({ initialView = "semanal" }: CalendarViewProps) {
               </div>
               {(vistaCalendario === "diaria" ? [fechaBase] : diasSemanaActual).map((diaDate) => {
                 const nombreDia = diasSemana[(diaDate.getDay() + 6) % 7];
+                const isToday = isSameCalendarDay(diaDate, today);
                 return (
                   <div
                     key={nombreDia}
-                    className="p-3 text-center border-r border-[var(--color-border)] last:border-0 bg-[var(--color-surface)]/50 flex flex-col items-center justify-center"
+                    className={`p-3 text-center border-r border-[var(--color-border)] last:border-0 flex flex-col items-center justify-center ${
+                      isToday
+                        ? "bg-[var(--color-info-surface)] ring-2 ring-inset ring-[var(--color-primary)]"
+                        : "bg-[var(--color-surface)]/50"
+                    }`}
                   >
-                    <span className="text-sm font-black text-[var(--color-text)]">
+                    <span
+                      className={`text-sm font-black ${isToday ? "text-[var(--color-primary)]" : "text-[var(--color-text)]"}`}
+                    >
                       {translateWeekday(t, nombreDia)} {diaDate.getDate()}
                     </span>
+                    {isToday ? (
+                      <span className="mt-0.5 text-[10px] font-bold uppercase tracking-wide text-[var(--color-primary)]">
+                        {t("common.today")}
+                      </span>
+                    ) : null}
                   </div>
                 );
               })}
@@ -303,8 +320,14 @@ export function CalendarView({ initialView = "semanal" }: CalendarViewProps) {
 
                 {(vistaCalendario === "diaria" ? [fechaBase] : diasSemanaActual).map((diaDate) => {
                   const nombreDia = diasSemana[(diaDate.getDay() + 6) % 7];
+                  const isToday = isSameCalendarDay(diaDate, today);
                   return (
-                    <div key={nombreDia} className="border-r border-[var(--color-border)] relative">
+                    <div
+                      key={nombreDia}
+                      className={`border-r border-[var(--color-border)] relative ${
+                        isToday ? "bg-[var(--color-info-surface)]/40" : ""
+                      }`}
+                    >
                       {horasActuales.map((hora) => (
                         <div
                           key={`${nombreDia}-${hora}`}
@@ -386,14 +409,25 @@ export function CalendarView({ initialView = "semanal" }: CalendarViewProps) {
                 const gruposDelDia = diaObj
                   ? grupos.filter((group) => group.weekdays.includes(diaSemanaNombre))
                   : [];
+                const isToday = diaObj ? isSameCalendarDay(diaObj, today) : false;
 
                 return (
                   <div
                     key={idx}
-                    className={`border-r border-b border-[var(--color-border)] p-2 flex flex-col ${!diaObj ? "bg-[var(--color-surface)]" : "bg-[var(--color-surface-elevated)] hover:bg-[var(--color-info-surface)] transition-colors"}`}
+                    className={`border-r border-b border-[var(--color-border)] p-2 flex flex-col ${
+                      !diaObj
+                        ? "bg-[var(--color-surface)]"
+                        : isToday
+                          ? "bg-[var(--color-info-surface)] ring-2 ring-inset ring-[var(--color-primary)]"
+                          : "bg-[var(--color-surface-elevated)] hover:bg-[var(--color-info-surface)] transition-colors"
+                    }`}
                   >
                     {diaObj && (
-                      <span className="text-sm font-bold text-[var(--color-text-muted)] mb-2 block text-right">
+                      <span
+                        className={`text-sm font-bold mb-2 block text-right ${
+                          isToday ? "text-[var(--color-primary)]" : "text-[var(--color-text-muted)]"
+                        }`}
+                      >
                         {diaObj.getDate()}
                       </span>
                     )}

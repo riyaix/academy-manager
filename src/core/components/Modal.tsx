@@ -59,21 +59,28 @@ export function Modal({
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
-    const handleEscape = (event: globalThis.KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-
-    document.addEventListener("keydown", handleEscape);
+    // Focus the panel once when the dialog opens — do not depend on `onClose`, or an
+    // unstable callback identity would steal focus from inputs on every parent re-render.
     panelRef.current?.focus();
 
     return () => {
       document.body.style.overflow = previousOverflow;
-      document.removeEventListener("keydown", handleEscape);
       const previous = previousFocusRef.current;
       if (previous && document.contains(previous)) {
         previous.focus();
       }
     };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [open, onClose]);
 
   const handleKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {

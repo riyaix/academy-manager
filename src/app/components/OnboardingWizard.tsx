@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { open } from "@tauri-apps/plugin-dialog";
 import {
@@ -48,7 +48,7 @@ export function OnboardingWizard() {
     return true;
   }, [backupEnabled, backupFolder, name, step]);
 
-  const finish = () => {
+  const finish = useCallback(() => {
     const trimmedName = name.trim();
     setAppName(trimmedName);
     setOrganization({ ...organization, legalName: trimmedName });
@@ -59,7 +59,21 @@ export function OnboardingWizard() {
     }
     setOnboardingCompleted(true);
     toast({ message: t("onboarding.completeToast"), variant: "success" });
-  };
+  }, [
+    backupEnabled,
+    backupFolder,
+    i18n,
+    locale,
+    name,
+    organization,
+    setAppName,
+    setAutoBackupEnabled,
+    setAutoBackupFolderPath,
+    setOnboardingCompleted,
+    setOrganization,
+    t,
+    toast,
+  ]);
 
   const handleChooseFolder = async () => {
     if (!isTauriRuntime()) {
@@ -85,9 +99,9 @@ export function OnboardingWizard() {
     setStep(steps[stepIndex + 1]);
   };
 
-  const handleSkip = () => {
+  const handleSkip = useCallback(() => {
     setOnboardingCompleted(true);
-  };
+  }, [setOnboardingCompleted]);
 
   return (
     <Modal

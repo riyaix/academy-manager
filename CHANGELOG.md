@@ -10,21 +10,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and [Semantic Ver
 
 - Database startup when schema v1 was stuck behind the app (edited initial migration checksum blocked sqlx upgrades; pending column migrations now repair on open)
 - SQLite `cannot commit - no transaction is active` on save/hydrate — transactions now run on one Rust connection instead of pooled `BEGIN`/`COMMIT` calls
+- Onboarding academy name field losing focus after each keystroke (Modal re-focused on unstable `onClose`)
 
 ### Added
 
 - English domain model end-to-end in the Zustand store and feature UIs (Phase 8.1)
 - Global search palette (`Ctrl+K`) across students, payments, courses, and groups
+- Sidebar **Search** entry under General Settings (opens the same palette)
 - Reports view with monthly income, status breakdown, top students, and overdue aging
 - In-app PDF receipt preview from payment history
 - Feature-level error boundary with reload
 - Student CSV/Excel import with column mapping, duplicate detection, and import log
 - Filtered payment-history PDF export (CSV + PDF on students, courses, and payment history)
+- Calendar friendly long dates and today-column highlight
 
 ### Changed
 
 - Settings JSON loader normalizes legacy Spanish organization / fixed-cost shapes on read
 - Schema migrations: `group_ids_json` moved to migration v3 (initial schema left immutable)
+- Settings: language and backup under Organization & appearance; System preferences tab removed (typography/theme/size archived)
+- Native `<select>` styling aligned with the design system
 
 ## [0.2.0] - 2026-07-18
 

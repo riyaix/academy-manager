@@ -2,23 +2,20 @@ import {
   Building2,
   Palette,
   Image as ImageIcon,
-  Type,
   MapPin,
   Trash2,
-  Settings2,
   Archive,
   LoaderCircle,
   FolderOpen,
   Clock,
-  Sun,
-  Moon,
-  Monitor,
+  Globe,
 } from "lucide-react";
 import { useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { open } from "@tauri-apps/plugin-dialog";
 import { useToast } from "../../../core/components/Toast";
 import { useConfirm } from "../../../core/components/ConfirmDialog";
+import { Select } from "../../../core/components/Select";
 import { exportBackup, importBackup } from "../../../core/backup";
 import { readImageAsDataUrl } from "../../../core/utils/image";
 import { formatTaxIdentifier } from "../../../domain/tax-id";
@@ -28,7 +25,6 @@ export function SettingsForm() {
   const { t, i18n } = useTranslation();
   const { toast } = useToast();
   const { confirm } = useConfirm();
-  const [pestaña, setPestaña] = useState("empresa");
   const [exportingBackup, setExportingBackup] = useState(false);
   const [importingBackup, setImportingBackup] = useState(false);
 
@@ -39,10 +35,6 @@ export function SettingsForm() {
     setLogoDataUrl,
     organization,
     setOrganization,
-    fontSize,
-    setFontSize,
-    colorScheme,
-    setColorScheme,
     autoBackupEnabled,
     setAutoBackupEnabled,
     autoBackupFolderPath,
@@ -160,24 +152,7 @@ export function SettingsForm() {
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row bg-[var(--color-surface-muted)] p-1.5 rounded-lg border border-[var(--color-border)] w-full sm:w-fit mb-8 shrink-0">
-        <button
-          onClick={() => setPestaña("empresa")}
-          className={`flex-1 sm:flex-none flex justify-center items-center px-8 py-3 rounded-md text-base font-bold transition-colors cursor-pointer ${pestaña === "empresa" ? "bg-[var(--color-surface-elevated)] text-[var(--color-primary)] shadow-sm" : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]"}`}
-        >
-          <Building2 className="w-5 h-5 mr-2" /> {t("settings.tabs.companyAppearance")}
-        </button>
-        <button
-          onClick={() => setPestaña("preferencias")}
-          className={`flex-1 sm:flex-none flex justify-center items-center px-8 py-3 rounded-md text-base font-bold transition-colors cursor-pointer ${pestaña === "preferencias" ? "bg-[var(--color-surface-elevated)] text-[var(--color-primary)] shadow-sm" : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]"}`}
-        >
-          <Settings2 className="w-5 h-5 mr-2" /> {t("settings.tabs.systemPreferences")}
-        </button>
-      </div>
-
-      {/* PESTAÑA 1: EMPRESA */}
-      {pestaña === "empresa" && (
-        <div className="flex-1 flex flex-col xl:flex-row gap-8">
+              <div className="flex-1 flex flex-col xl:flex-row gap-8">
           <div className="w-full xl:w-1/2 flex flex-col gap-6">
             <div className="border border-[var(--color-border)] rounded-xl overflow-hidden shadow-sm bg-[var(--color-surface-elevated)]">
               <div className="bg-[var(--color-surface)] border-b border-[var(--color-border)] p-4 flex items-center gap-2">
@@ -248,17 +223,18 @@ export function SettingsForm() {
                   </h4>
                   <div className="grid grid-cols-12 gap-3">
                     <div className="col-span-12 md:col-span-4">
-                      <select
+                      <Select
+                        size="sm"
                         value={organization?.streetType || "Calle"}
                         onChange={(e) =>
                           setOrganization({ ...organization, streetType: e.target.value })
                         }
-                        className="w-full border border-[var(--color-border)] rounded-lg p-2 outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-sm bg-[var(--color-surface-elevated)] cursor-pointer"
+                        aria-label={t("settings.company.addressTitle")}
                       >
                         <option value="Calle">{t("settings.company.streetTypes.street")}</option>
                         <option value="Avenida">{t("settings.company.streetTypes.avenue")}</option>
                         <option value="Plaza">{t("settings.company.streetTypes.square")}</option>
-                      </select>
+                      </Select>
                     </div>
                     <div className="col-span-12 md:col-span-8">
                       <input
@@ -331,211 +307,27 @@ export function SettingsForm() {
           </div>
 
           <div className="w-full xl:w-1/2 flex flex-col gap-6">
+
             <div className="border border-[var(--color-border)] rounded-xl overflow-hidden shadow-sm bg-[var(--color-surface-elevated)]">
               <div className="bg-[var(--color-surface)] border-b border-[var(--color-border)] p-4 flex items-center gap-2">
-                <Palette className="w-5 h-5 text-[var(--color-text-muted)]" />
-                <h3 className="font-bold text-[var(--color-text)]">{t("settings.appearance.receiptTitle")}</h3>
-              </div>
-
-              <div className="p-5 space-y-6">
-                <div>
-                  <label className="font-bold text-[var(--color-text)] text-sm mb-2 block">
-                    {t("settings.appearance.logoLabel")}
-                  </label>
-                  <div className="flex items-center gap-4">
-                    <div className="w-24 h-24 border-2 border-dashed border-[var(--color-border)] rounded-xl flex items-center justify-center bg-[var(--color-surface)] overflow-hidden relative group shrink-0">
-                      {logoDataUrl ? (
-                        <>
-                          <img
-                            src={logoDataUrl}
-                            alt={t("settings.appearance.logoAlt")}
-                            className="w-full h-full object-contain p-2"
-                          />
-                          <div
-                            onClick={() => setLogoDataUrl(null)}
-                            className="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center cursor-pointer transition-all"
-                          >
-                            <Trash2 className="w-6 h-6 text-[var(--color-on-primary)]" />
-                          </div>
-                        </>
-                      ) : (
-                        <ImageIcon className="w-8 h-8 text-[var(--color-text-muted)]" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <input
-                        type="file"
-                        id="logoUpload"
-                        accept="image/png, image/jpeg"
-                        onChange={handleLogoUpload}
-                        className="hidden"
-                      />
-                      <label
-                        htmlFor="logoUpload"
-                        className="bg-[var(--color-surface-elevated)] border border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-surface)] px-4 py-2 rounded-lg text-sm font-bold transition-colors cursor-pointer inline-block shadow-sm"
-                      >
-                        {t("settings.appearance.uploadImage")}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="font-bold text-[var(--color-text)] text-sm mb-2 block">
-                    {t("settings.appearance.brandColor")}
-                  </label>
-                  <div className="flex flex-wrap gap-2 items-center">
-                    {paletaColores.map((color) => (
-                      <button
-                        key={color}
-                        onClick={() => setBrandColor(color)}
-                        className={`w-8 h-8 rounded-full shadow-sm cursor-pointer transition-all ${brandColor === color ? "ring-2 ring-offset-2 ring-[var(--color-text)] scale-110" : "opacity-80 hover:opacity-100"}`}
-                        style={{ backgroundColor: color }}
-                        title={color}
-                      />
-                    ))}
-                    <div className="w-px h-8 bg-[var(--color-surface-muted)] mx-2"></div>
-                    <div className="relative border border-[var(--color-border)] rounded-lg overflow-hidden shadow-sm flex items-center bg-[var(--color-surface-elevated)] h-10 w-10">
-                      <input
-                        type="color"
-                        value={
-                          (brandColor || "#0f766e").startsWith("#") ? brandColor : "#0f766e"
-                        }
-                        onChange={(e) => setBrandColor(e.target.value)}
-                        className="absolute inset-0 w-16 h-16 -top-2 -left-2 cursor-pointer"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* PESTAÑA 2: PREFERENCIAS */}
-      {pestaña === "preferencias" && (
-        <div className="flex-1 flex flex-col md:flex-row gap-8 items-start">
-          <div className="w-full md:w-1/2 flex flex-col gap-6">
-            <div className="border border-[var(--color-border)] rounded-xl overflow-hidden shadow-sm bg-[var(--color-surface-elevated)]">
-              <div className="bg-[var(--color-surface-muted)] border-b border-[var(--color-border)] p-4 flex items-center gap-2">
-                <Type className="w-5 h-5 text-[var(--color-text-muted)]" aria-hidden />
-                <h3 className="font-bold text-[var(--color-text)] mb-0">{t("settings.typography.title")}</h3>
-              </div>
-              <div className="p-5">
-                <p className="text-sm text-[var(--color-text-muted)]">{t("settings.typography.description")}</p>
-                <p className="mt-3 text-2xl font-bold text-[var(--color-text)]" aria-hidden>
-                  Aa
-                </p>
-              </div>
-            </div>
-
-            <div className="border border-[var(--color-border)] rounded-xl overflow-hidden shadow-sm bg-[var(--color-surface-elevated)]">
-              <div className="bg-[var(--color-surface-muted)] border-b border-[var(--color-border)] p-4 flex items-center gap-2">
-                <Monitor className="w-5 h-5 text-[var(--color-text-muted)]" aria-hidden />
-                <h3 className="font-bold text-[var(--color-text)] mb-0">{t("settings.theme.title")}</h3>
-              </div>
-              <div className="p-5">
-                <div
-                  className="grid grid-cols-3 gap-3 bg-[var(--color-surface-muted)] p-1.5 rounded-xl border border-[var(--color-border)]"
-                  role="radiogroup"
-                  aria-label={t("settings.theme.title")}
-                >
-                  {[
-                    { id: "system", icon: Monitor, labelKey: "settings.theme.system" },
-                    { id: "light", icon: Sun, labelKey: "settings.theme.light" },
-                    { id: "dark", icon: Moon, labelKey: "settings.theme.dark" },
-                  ].map(({ id, icon: Icon, labelKey }) => {
-                    const selected = (colorScheme || "system") === id;
-                    return (
-                      <button
-                        key={id}
-                        type="button"
-                        role="radio"
-                        aria-checked={selected}
-                        onClick={() => setColorScheme(id)}
-                        className={`flex flex-col items-center justify-center gap-1 p-3 min-h-[64px] rounded-lg transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] ${
-                          selected
-                            ? "bg-[var(--color-surface-elevated)] shadow-md border border-[var(--color-border)] text-[var(--color-primary)]"
-                            : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-elevated)]/60"
-                        }`}
-                      >
-                        <Icon className="h-5 w-5" aria-hidden />
-                        <span className="text-[10px] font-semibold uppercase">{t(labelKey)}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div className="border border-[var(--color-border)] rounded-xl overflow-hidden shadow-sm bg-[var(--color-surface-elevated)]">
-              <div className="bg-[var(--color-surface-muted)] border-b border-[var(--color-border)] p-4 flex items-center gap-2">
-                <Type className="w-5 h-5 text-[var(--color-text-muted)]" aria-hidden />
+                <Globe className="w-5 h-5 text-[var(--color-text-muted)]" aria-hidden />
                 <h3 className="font-bold text-[var(--color-text)] mb-0">{t("language.label")}</h3>
               </div>
               <div className="p-5">
-                <label htmlFor="settings-language" className="sr-only">
-                  {t("language.label")}
-                </label>
-                <select
+                <Select
                   id="settings-language"
                   value={i18n.language.startsWith("en") ? "en" : "es"}
                   onChange={(e) => void i18n.changeLanguage(e.target.value)}
-                  className="w-full min-h-[44px] border border-[var(--color-border)] rounded-lg px-3 py-2 bg-[var(--color-surface-elevated)] text-[var(--color-text)] outline-none focus:ring-2 focus:ring-[var(--color-primary)] cursor-pointer"
+                  aria-label={t("language.label")}
                 >
                   <option value="es">{t("language.es")}</option>
                   <option value="en">{t("language.en")}</option>
-                </select>
+                </Select>
               </div>
             </div>
 
             <div className="border border-[var(--color-border)] rounded-xl overflow-hidden shadow-sm bg-[var(--color-surface-elevated)]">
-              <div className="bg-[var(--color-surface-muted)] border-b border-[var(--color-border)] p-4 flex items-center gap-2">
-                <Type className="w-5 h-5 text-[var(--color-text-muted)]" aria-hidden />
-                <h3 className="font-bold text-[var(--color-text)] mb-0">{t("settings.fontSize.title")}</h3>
-              </div>
-              <div className="p-5">
-                <div
-                  className="grid grid-cols-3 gap-3 bg-[var(--color-surface-muted)] p-1.5 rounded-xl border border-[var(--color-border)]"
-                  role="radiogroup"
-                  aria-label={t("settings.fontSize.title")}
-                >
-                  {[
-                    { id: "small", sampleClass: "text-xs", labelKey: "settings.fontSize.small" },
-                    { id: "normal", sampleClass: "text-base", labelKey: "settings.fontSize.normal" },
-                    { id: "large", sampleClass: "text-xl", labelKey: "settings.fontSize.large" },
-                  ].map(({ id, sampleClass, labelKey }) => {
-                    const selected =
-                      fontSize === id ||
-                      (id === "small" && fontSize === "pequeña") ||
-                      (id === "large" && fontSize === "grande");
-                    return (
-                      <button
-                        key={id}
-                        type="button"
-                        role="radio"
-                        aria-checked={selected}
-                        onClick={() => setFontSize(id)}
-                        className={`flex flex-col items-center justify-center p-3 min-h-[64px] rounded-lg transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] ${
-                          selected
-                            ? "bg-[var(--color-surface-elevated)] shadow-md border border-[var(--color-border)] text-[var(--color-primary)]"
-                            : "text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-elevated)]/60"
-                        }`}
-                      >
-                        <span className={`${sampleClass} font-bold mb-1`} aria-hidden>
-                          Aa
-                        </span>
-                        <span className="text-[10px] font-semibold uppercase">{t(labelKey)}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div className="border border-[var(--color-border)] rounded-xl overflow-hidden shadow-sm bg-[var(--color-surface-elevated)]">
-              <div className="bg-[var(--color-surface-muted)] border-b border-[var(--color-border)] p-4 flex items-center gap-2">
+              <div className="bg-[var(--color-surface)] border-b border-[var(--color-border)] p-4 flex items-center gap-2">
                 <Archive className="w-5 h-5 text-[var(--color-text-muted)]" aria-hidden />
                 <h3 className="font-bold text-[var(--color-text)] mb-0">{t("backup.title")}</h3>
               </div>
@@ -616,9 +408,86 @@ export function SettingsForm() {
                 </div>
               </div>
             </div>
+            <div className="border border-[var(--color-border)] rounded-xl overflow-hidden shadow-sm bg-[var(--color-surface-elevated)]">
+              <div className="bg-[var(--color-surface)] border-b border-[var(--color-border)] p-4 flex items-center gap-2">
+                <Palette className="w-5 h-5 text-[var(--color-text-muted)]" />
+                <h3 className="font-bold text-[var(--color-text)]">{t("settings.appearance.receiptTitle")}</h3>
+              </div>
+
+              <div className="p-5 space-y-6">
+                <div>
+                  <label className="font-bold text-[var(--color-text)] text-sm mb-2 block">
+                    {t("settings.appearance.logoLabel")}
+                  </label>
+                  <div className="flex items-center gap-4">
+                    <div className="w-24 h-24 border-2 border-dashed border-[var(--color-border)] rounded-xl flex items-center justify-center bg-[var(--color-surface)] overflow-hidden relative group shrink-0">
+                      {logoDataUrl ? (
+                        <>
+                          <img
+                            src={logoDataUrl}
+                            alt={t("settings.appearance.logoAlt")}
+                            className="w-full h-full object-contain p-2"
+                          />
+                          <div
+                            onClick={() => setLogoDataUrl(null)}
+                            className="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center cursor-pointer transition-all"
+                          >
+                            <Trash2 className="w-6 h-6 text-[var(--color-on-primary)]" />
+                          </div>
+                        </>
+                      ) : (
+                        <ImageIcon className="w-8 h-8 text-[var(--color-text-muted)]" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <input
+                        type="file"
+                        id="logoUpload"
+                        accept="image/png, image/jpeg"
+                        onChange={handleLogoUpload}
+                        className="hidden"
+                      />
+                      <label
+                        htmlFor="logoUpload"
+                        className="bg-[var(--color-surface-elevated)] border border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-surface)] px-4 py-2 rounded-lg text-sm font-bold transition-colors cursor-pointer inline-block shadow-sm"
+                      >
+                        {t("settings.appearance.uploadImage")}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="font-bold text-[var(--color-text)] text-sm mb-2 block">
+                    {t("settings.appearance.brandColor")}
+                  </label>
+                  <div className="flex flex-wrap gap-2 items-center">
+                    {paletaColores.map((color) => (
+                      <button
+                        key={color}
+                        onClick={() => setBrandColor(color)}
+                        className={`w-8 h-8 rounded-full shadow-sm cursor-pointer transition-all ${brandColor === color ? "ring-2 ring-offset-2 ring-[var(--color-text)] scale-110" : "opacity-80 hover:opacity-100"}`}
+                        style={{ backgroundColor: color }}
+                        title={color}
+                      />
+                    ))}
+                    <div className="w-px h-8 bg-[var(--color-surface-muted)] mx-2"></div>
+                    <div className="relative border border-[var(--color-border)] rounded-lg overflow-hidden shadow-sm flex items-center bg-[var(--color-surface-elevated)] h-10 w-10">
+                      <input
+                        type="color"
+                        value={
+                          (brandColor || "#0f766e").startsWith("#") ? brandColor : "#0f766e"
+                        }
+                        onChange={(e) => setBrandColor(e.target.value)}
+                        className="absolute inset-0 w-16 h-16 -top-2 -left-2 cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      )}
     </div>
   );
 }
