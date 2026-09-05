@@ -297,7 +297,7 @@
       "mappingHint": "Archivo {{file}} — {{count}} filas. Asigna cada columna a un campo.",
       "mappingRequired": "Mapea al menos Nombre y Apellidos del tutor.",
       "column": "Columna del archivo",
-      "mapTo": "Campo en Facturador",
+      "mapTo": "Campo de Academy Manager",
       "sample": "Ejemplo",
       "continuePreview": "Vista previa",
       "previewSummary": "{{ready}} listas, {{duplicates}} duplicadas, {{missing}} incompletas",
@@ -781,7 +781,7 @@
     "showHelp": "Mostrar esta ayuda"
   },
   "onboarding": {
-    "title": "Bienvenido a Facturador",
+    "title": "Bienvenido a Academy Manager",
     "welcomeTitle": "Configura tu academia",
     "welcomeBody": "Empecemos con el nombre que aparecerá en la barra lateral y en los recibos internos.",
     "orgNameLabel": "Nombre de la academia",
@@ -792,7 +792,7 @@
     "backupEnable": "Activar copia automática semanal",
     "skip": "Omitir por ahora",
     "finish": "Empezar",
-    "completeToast": "¡Listo! Ya puedes usar Facturador."
+    "completeToast": "¡Listo! Ya puedes usar Academy Manager."
   },
   "search": {
     "title": "Busqueda rapida",
@@ -833,7 +833,7 @@
   "template": {
     "nav": "Plantilla (ejemplo)",
     "title": "Módulo de ejemplo",
-    "sampleName": "Facturador",
+    "sampleName": "Academy Manager",
     "hint": "Copia esta carpeta a features/<nombre> y sigue el checklist del README.",
     "action": "Acción de ejemplo"
   }

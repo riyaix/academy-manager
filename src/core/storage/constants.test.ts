@@ -8,9 +8,9 @@ import {
 } from "./constants";
 
 describe("storage constants", () => {
-  it("uses facturador.db as the SQLite file", () => {
-    expect(DATABASE_FILE).toBe("facturador.db");
-    expect(DATABASE_CONNECTION).toBe("sqlite:facturador.db");
+  it("uses academy-manager.db as the SQLite file", () => {
+    expect(DATABASE_FILE).toBe("academy-manager.db");
+    expect(DATABASE_CONNECTION).toBe("sqlite:academy-manager.db");
   });
 
   it("tracks the latest schema migration version", () => {

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Academy Manager — Academy management &amp; private bookkeeping</title>
+    <meta
+      name="description"
+      content="Local-first desktop app for managing students, courses, and internal payment records."
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: oklch(0.98 0.01 250);
+        --surface: oklch(1 0 0);
+        --text: oklch(0.22 0.02 250);
+        --muted: oklch(0.5 0.02 250);
+        --primary: oklch(0.48 0.18 250);
+        --border: oklch(0.88 0.02 250);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: oklch(0.16 0.02 250);
+          --surface: oklch(0.2 0.02 250);
+          --text: oklch(0.94 0.01 250);
+          --muted: oklch(0.7 0.02 250);
+          --primary: oklch(0.68 0.16 250);
+          --border: oklch(0.32 0.02 250);
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+      .wrap {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 4rem;
+      }
+      h1 {
+        font-size: clamp(1.75rem, 4vw, 2.25rem);
+        line-height: 1.2;
+        margin: 0 0 0.5rem;
+      }
+      .lead {
+        color: var(--muted);
+        font-size: 1.05rem;
+        margin-bottom: 2rem;
+      }
+      section {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1rem;
+      }
+      h2 {
+        font-size: 1rem;
+        margin: 0 0 0.75rem;
+      }
+      ul {
+        margin: 0;
+        padding-left: 1.25rem;
+      }
+      li + li {
+        margin-top: 0.35rem;
+      }
+      .cta {
+        display: inline-block;
+        margin-top: 1.25rem;
+        padding: 0.75rem 1.25rem;
+        background: var(--primary);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+      }
+      .cta:hover {
+        filter: brightness(1.08);
+      }
+      .note {
+        font-size: 0.9rem;
+        color: var(--muted);
+        margin-top: 1.5rem;
+      }
+      code {
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <h1>Academy Manager</h1>
+      <p class="lead">
+        Local-first desktop app for academy management and private bookkeeping — payment records
+        and receipts for your own files, not legal invoicing.
+      </p>
+
+      <section>
+        <h2>Features</h2>
+        <ul>
+          <li>Students, courses, class groups, and enrollments</li>
+          <li>Batch and manual internal payment records with PDF export</li>
+          <li>Reports, global search, and payment history with PDF preview</li>
+          <li>One-click backup and restore (<code>.academy-manager-backup.zip</code>)</li>
+          <li>Spanish default UI with English in Settings</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Download</h2>
+        <p>
+          Installers are published on tagged releases. Pick the build for your operating system
+          (Linux <code>.deb</code> or AppImage, Windows <code>.msi</code>).
+        </p>
+        <a
+          class="cta"
+          href="https://github.com/riyaix/academy-manager/releases"
+          rel="noopener noreferrer"
+        >
+          View releases
+        </a>
+        <p class="note">
+          New to the app? After install, the onboarding wizard walks you through academy name,
+          locale, and optional auto-backup.
+        </p>
+      </section>
+
+      <section>
+        <h2>Getting started</h2>
+        <ol>
+          <li>Download and install the bundle for your OS from Releases.</li>
+          <li>Complete the first-run wizard (name, language, backup folder optional).</li>
+          <li>Add students manually or import CSV/Excel from the Students screen.</li>
+          <li>Use Billing to generate monthly payment records and export PDFs.</li>
+        </ol>
+      </section>
+
+      <p class="note">
+        Source:
+        <a href="https://github.com/riyaix/academy-manager">github.com/riyaix/academy-manager</a>
+      </p>
+    </main>
+  </body>
+</html>

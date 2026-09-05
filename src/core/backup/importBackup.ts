@@ -27,12 +27,12 @@ type RestoreBackupResponse = {
 
 function validateSchemaCompatibility(schemaVersion: number): string | null {
   if (schemaVersion > CURRENT_SCHEMA_VERSION) {
-    return `Backup schema v${schemaVersion} is newer than this app (v${CURRENT_SCHEMA_VERSION}). Update Facturador first.`;
+    return `Backup schema v${schemaVersion} is newer than this app (v${CURRENT_SCHEMA_VERSION}). Update Academy Manager first.`;
   }
   return null;
 }
 
-/** Import a `.facturador-backup.zip` after validation and user confirmation. */
+/** Import a `.academy-manager-backup.zip` after validation and user confirmation. */
 export async function importBackup(
   confirmOverwrite: (metadata: BackupMetadata) => Promise<boolean>,
 ): Promise<ImportBackupResult> {
@@ -48,7 +48,7 @@ export async function importBackup(
       multiple: false,
       filters: [
         {
-          name: "Facturador Backup",
+          name: "Academy Manager Backup",
           extensions: [BACKUP_FILE_EXTENSION],
         },
       ],

@@ -6,7 +6,7 @@ const getState = vi.fn();
 const setLastAutoBackupAt = vi.fn();
 
 vi.mock("./exportBackup", () => ({
-  buildDefaultBackupFilename: () => "facturador-backup-2026-07-18.facturador-backup.zip",
+  buildDefaultBackupFilename: () => "academy-manager-backup-2026-07-18.academy-manager-backup.zip",
   joinBackupPath: (folder: string, filename: string) => `${folder}/${filename}`,
   exportBackupToPath: (...args: unknown[]) => exportBackupToPath(...args),
 }));
@@ -33,7 +33,7 @@ describe("maybeRunAutoBackup", () => {
     });
     exportBackupToPath.mockResolvedValue({
       status: "success",
-      path: "/backups/facturador-backup-2026-07-18.facturador-backup.zip",
+      path: "/backups/academy-manager-backup-2026-07-18.academy-manager-backup.zip",
     });
   });
 
@@ -70,7 +70,7 @@ describe("maybeRunAutoBackup", () => {
     const result = await maybeRunAutoBackup(now);
 
     expect(exportBackupToPath).toHaveBeenCalledWith(
-      "/backups/facturador-backup-2026-07-18.facturador-backup.zip",
+      "/backups/academy-manager-backup-2026-07-18.academy-manager-backup.zip",
     );
     expect(setLastAutoBackupAt).toHaveBeenCalledWith(now.toISOString());
     expect(result.status).toBe("success");

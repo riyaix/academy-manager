@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const FALLBACK_TITLE = "Facturador";
+const FALLBACK_TITLE = "Academy Manager";
 
 async function syncNativeWindowTitle(title: string): Promise<void> {
   try {

@@ -1,5 +1,5 @@
 /** SQLite file name in the Tauri app config directory. */
-export const DATABASE_FILE = "facturador.db";
+export const DATABASE_FILE = "academy-manager.db";
 
 /** Connection string passed to `@tauri-apps/plugin-sql`. */
 export const DATABASE_CONNECTION = `sqlite:${DATABASE_FILE}`;

@@ -2,7 +2,7 @@ use tauri_plugin_sql::{Migration, MigrationKind};
 
 pub mod transaction;
 
-pub const DATABASE_CONNECTION: &str = "sqlite:facturador.db";
+pub const DATABASE_CONNECTION: &str = "sqlite:academy-manager.db";
 
 const MIGRATION_FILES: &[(&str, i64, &str)] = &[
     (

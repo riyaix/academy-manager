@@ -11,7 +11,7 @@ describe("backup metadata", () => {
 
     expect(metadata).toEqual({
       formatVersion: BACKUP_FORMAT_VERSION,
-      product: "facturador",
+      product: "academy-manager",
       appVersion: expect.any(String),
       schemaVersion: 2,
       exportedAt: "2026-07-18T10:00:00.000Z",
@@ -47,7 +47,7 @@ describe("validateBackupMetadata", () => {
 
   it("rejects unknown products and formats", () => {
     const metadata = buildBackupMetadata(2);
-    expect(validateBackupMetadata({ ...metadata, product: "other" as "facturador" })).toMatch(
+    expect(validateBackupMetadata({ ...metadata, product: "other" as "academy-manager" })).toMatch(
       /product/i,
     );
     expect(validateBackupMetadata({ ...metadata, formatVersion: 99 })).toMatch(/format/i);
@@ -56,8 +56,8 @@ describe("validateBackupMetadata", () => {
 
 describe("backup constants", () => {
   it("uses the product-specific backup extension", () => {
-    expect(BACKUP_FILE_EXTENSION).toBe("facturador-backup.zip");
-    expect(BACKUP_ARCHIVE_ENTRIES.database).toBe("facturador.db");
+    expect(BACKUP_FILE_EXTENSION).toBe("academy-manager-backup.zip");
+    expect(BACKUP_ARCHIVE_ENTRIES.database).toBe("academy-manager.db");
     expect(BACKUP_ARCHIVE_ENTRIES.metadata).toBe("metadata.json");
     expect(BACKUP_ARCHIVE_ENTRIES.logo).toBe("logo.png");
   });

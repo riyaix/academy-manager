@@ -297,7 +297,7 @@
       "mappingHint": "File {{file}} — {{count}} rows. Map each column to a field.",
       "mappingRequired": "Map at least guardian first and last name.",
       "column": "File column",
-      "mapTo": "Facturador field",
+      "mapTo": "Academy Manager field",
       "sample": "Sample",
       "continuePreview": "Preview",
       "previewSummary": "{{ready}} ready, {{duplicates}} duplicates, {{missing}} incomplete",
@@ -781,7 +781,7 @@
     "showHelp": "Show this help"
   },
   "onboarding": {
-    "title": "Welcome to Facturador",
+    "title": "Welcome to Academy Manager",
     "welcomeTitle": "Set up your academy",
     "welcomeBody": "Let's start with the name shown in the sidebar and on internal receipts.",
     "orgNameLabel": "Academy name",
@@ -792,7 +792,7 @@
     "backupEnable": "Enable weekly automatic backup",
     "skip": "Skip for now",
     "finish": "Get started",
-    "completeToast": "All set! You can start using Facturador."
+    "completeToast": "All set! You can start using Academy Manager."
   },
   "search": {
     "title": "Quick search",
@@ -833,7 +833,7 @@
   "template": {
     "nav": "Template (example)",
     "title": "Example module",
-    "sampleName": "Facturador",
+    "sampleName": "Academy Manager",
     "hint": "Copy this folder to features/<name> and follow the README checklist.",
     "action": "Example action"
   }

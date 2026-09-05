@@ -1,6 +1,6 @@
 export type ColorSchemePreference = "system" | "light" | "dark";
 
-export const COLOR_SCHEME_STORAGE_KEY = "facturador_color_scheme";
+export const COLOR_SCHEME_STORAGE_KEY = "academy_manager_color_scheme";
 
 const VALID: ReadonlySet<string> = new Set(["system", "light", "dark"]);
 

@@ -3,7 +3,7 @@ import { BACKUP_FORMAT_VERSION } from "./constants";
 
 export type BackupMetadata = {
   formatVersion: number;
-  product: "facturador";
+  product: "academy-manager";
   appVersion: string;
   schemaVersion: number;
   exportedAt: string;
@@ -12,7 +12,7 @@ export type BackupMetadata = {
 export function buildBackupMetadata(schemaVersion: number, exportedAt = new Date()): BackupMetadata {
   return {
     formatVersion: BACKUP_FORMAT_VERSION,
-    product: "facturador",
+    product: "academy-manager",
     appVersion: packageJson.version,
     schemaVersion,
     exportedAt: exportedAt.toISOString(),
@@ -21,7 +21,7 @@ export function buildBackupMetadata(schemaVersion: number, exportedAt = new Date
 
 /** Returns an error message when the backup cannot be restored by this app version. */
 export function validateBackupMetadata(metadata: BackupMetadata): string | null {
-  if (metadata.product !== "facturador") {
+  if (metadata.product !== "academy-manager") {
     return "Invalid backup product.";
   }
 

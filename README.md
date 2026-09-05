@@ -1,95 +1,127 @@
-# Facturador
+# Academy Manager
 
-Local-first desktop app for **academy management** and **private bookkeeping** (payment records, not legal invoices). Built with Tauri 2, React 19, TypeScript, Tailwind CSS 4, and SQLite.
+[![CI](https://github.com/riyaix/academy-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/riyaix/academy-manager/actions/workflows/ci.yml)
 
-## What it does
+Local-first desktop app for **academy management** and **private bookkeeping**. Track students, courses, enrollments, and internal payment records — not legal invoicing.
 
-- Manage students, courses, class groups, and enrollments
-- Create internal payment records (batch or manual) with PDF export
-- Track paid vs pending amounts for your own cash-flow view
-- One-click backup/restore (`.facturador-backup.zip`)
+Built with **Tauri 2**, **React 19**, **TypeScript**, **Tailwind CSS 4**, and **SQLite**.
 
-**Out of scope:** VeriFactu, AEAT, legal invoicing, multi-user cloud sync.
+## Features
 
-## Requirements
+### Students
+- Master-detail list with side panel
+- CSV and Excel import with column mapping, duplicate detection, and import log
+- CSV and PDF export of the current list
 
-- [Node.js](https://nodejs.org/) 20+
-- [Rust](https://www.rust-lang.org/tools/install) (for Tauri desktop builds)
-- **Windows:** [WebView2](https://developer.microsoft.com/microsoft-edge/webview2/) (usually preinstalled on Windows 11) + [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) for development builds
-- **Linux Mint / Ubuntu:** WebKitGTK 4.1 and related packages (see [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/)):
+### Courses and class groups
+- Course catalog with monthly fees
+- Class groups with capacity, schedule, weekdays, and color labels
+- Enrollment management per group
+
+### Calendar
+- Daily, weekly, and monthly views
+- Today column highlight and locale-aware long dates
+- Group sessions with capacity at a glance
+
+### Billing
+- Batch monthly payment records by billing period and groups
+- Manual one-off payment records
+- Duplicate billing warnings for the same period
+- Sequential record numbers and tax settings from organization preferences
+
+### Payment history
+- Filterable list of paid, pending, and voided records
+- In-app PDF receipt preview
+- CSV and PDF export of filtered results
+
+### Reports
+- Monthly income bar chart (collected vs pending)
+- Payment status breakdown
+- Top students by revenue
+- Overdue aging buckets
+- Optional date range filter
+
+### Dashboard
+- Active students, groups, occupancy, and alerts
+- Today’s classes and pending payments
+- Quick link to batch billing
+
+### Search and navigation
+- Global search palette (`Ctrl+K`) across students, payments, courses, and groups
+- Keyboard shortcuts for common actions (`Ctrl+N`, `Ctrl+?`, and more)
+
+### Settings and data
+- Organization name, logo, locale (Spanish default, English available)
+- Tax mode and rates for internal records
+- Theme (system / light / dark) and font size
+- One-click backup and restore (`.academy-manager-backup.zip`)
+- Optional weekly auto-backup to a folder you choose
+- First-run onboarding wizard
+
+## What this app is not
+
+- Legal invoicing or AEAT / VeriFactu compliance
+- Multi-user cloud sync
+- Mandatory encryption or login (optional hardening only)
+
+## Download
+
+Installers for **Linux Mint / Ubuntu** (`.deb`, AppImage) and **Windows** (`.msi`) are published on [GitHub Releases](https://github.com/riyaix/academy-manager/releases).
+
+Push a version tag and GitHub Actions builds and attaches the bundles automatically:
 
 ```bash
-sudo apt update
-sudo apt install libwebkit2gtk-4.1-dev build-essential curl wget file \
-  libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev pkg-config
+# Bump version in package.json, src-tauri/tauri.conf.json, src-tauri/Cargo.toml, CHANGELOG.md
+git tag v0.3.0
+git push origin main
+git push origin v0.3.0
 ```
+
+**One-time GitHub setup:** Settings → Actions → General → **Read and write permissions**. Settings → Pages → Source: **GitHub Actions**.
+
+## Requirements (development)
+
+- [Node.js](https://nodejs.org/) 20+
+- [Rust](https://www.rust-lang.org/tools/install) (Tauri desktop builds)
+- **Linux:** WebKitGTK 4.1 and build tools ([Tauri prerequisites](https://v2.tauri.app/start/prerequisites/))
+- **Windows:** WebView2 + [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
 
 ## Development
 
 ```bash
-# Install dependencies
 npm install
-
-# Web-only dev (mock data, no SQLite)
-npm run dev
-
-# Desktop app with SQLite
-npm run tauri dev
-
-# Quality checks
-npm run check    # typecheck + lint + format
-npm test         # Vitest (domain + core)
-npm run build    # production frontend build
+npm run dev          # web-only (mock data)
+npm run tauri dev    # desktop app with SQLite
+npm run check        # typecheck + lint + format
+npm test             # Vitest
+npm run build        # production frontend
 ```
 
 ## Project layout
 
 ```
 src/
-├── app/           # Shell, navigation registry, providers, global store
-├── core/          # Shared UI, storage, backup, PDF, hooks
-├── domain/        # Pure types + business rules (no React)
+├── app/           # Shell, navigation registry, global store
+├── core/          # Shared UI, storage, backup, PDF
+├── domain/        # Pure types and business rules
 ├── features/      # Self-contained feature modules
 └── locales/       # i18n (es default, en secondary)
 ```
 
-Each feature exports a `FeatureModule` from `index.ts` and registers in `app/navigation/registry.ts`. Features must **not** import sibling features — use `domain/` and `core/storage/` repositories instead.
-
-See [`docs/product/PLAN.md`](docs/product/PLAN.md) for the full roadmap, [`docs/analysis/desktop-readiness-and-accessibility.md`](docs/analysis/desktop-readiness-and-accessibility.md) for Windows / Linux Mint readiness and accessibility notes, and `src/features/_template/` for the module checklist.
-
-## Adding a feature
-
-1. Add types and pure logic in `src/domain/`
-2. Add repository methods in `src/core/storage/` if persisted
-3. Create `src/features/<name>/` (page, components, hooks, `index.ts`)
-4. Add i18n keys to `src/locales/es` and `src/locales/en`
-5. Register in `app/navigation/registry.ts`
-6. Add domain tests for business rules
-7. Update `CHANGELOG.md`
+Each feature registers in `app/navigation/registry.ts` and must not import sibling features directly.
 
 ## Keyboard shortcuts
 
 | Shortcut | Action |
 |----------|--------|
+| `Ctrl+K` | Global search |
 | `Ctrl+N` | New student |
 | `Ctrl+Shift+N` | New manual payment record |
 | `Ctrl+1` | Dashboard |
 | `Ctrl+2` | Students |
 | `Ctrl+3` | Billing |
 | `Ctrl+,` | Settings |
-| `Ctrl+?` | Show shortcuts help |
-
-## Testing
-
-Domain logic is covered by Vitest in `src/domain/**/*.test.ts`. Run:
-
-```bash
-npm test
-```
-
-## Backup
-
-Settings → Backup: export or import a `.facturador-backup.zip` containing the SQLite database, metadata, and logo. Optional weekly auto-backup to a folder you choose (configured in onboarding or Settings).
+| `Ctrl+?` | Shortcuts help |
 
 ## License
 

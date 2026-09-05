@@ -14,7 +14,7 @@ export type ExportBackupResult =
 
 function buildDefaultBackupFilename(date = new Date()): string {
   const day = date.toISOString().slice(0, 10);
-  return `facturador-backup-${day}.${BACKUP_FILE_EXTENSION}`;
+  return `academy-manager-backup-${day}.${BACKUP_FILE_EXTENSION}`;
 }
 
 function joinBackupPath(folderPath: string, filename: string): string {
@@ -44,7 +44,7 @@ async function createBackupArchiveAtPath(destinationPath: string): Promise<strin
   });
 }
 
-/** Export a `.facturador-backup.zip` to a known destination path (no dialog). */
+/** Export a `.academy-manager-backup.zip` to a known destination path (no dialog). */
 export async function exportBackupToPath(destinationPath: string): Promise<ExportBackupResult> {
   if (!isTauriRuntime()) {
     return {
@@ -62,7 +62,7 @@ export async function exportBackupToPath(destinationPath: string): Promise<Expor
   }
 }
 
-/** Export a `.facturador-backup.zip` via the native save dialog. */
+/** Export a `.academy-manager-backup.zip` via the native save dialog. */
 export async function exportBackup(): Promise<ExportBackupResult> {
   if (!isTauriRuntime()) {
     return {
@@ -76,7 +76,7 @@ export async function exportBackup(): Promise<ExportBackupResult> {
       defaultPath: buildDefaultBackupFilename(),
       filters: [
         {
-          name: "Facturador Backup",
+          name: "Academy Manager Backup",
           extensions: [BACKUP_FILE_EXTENSION],
         },
       ],

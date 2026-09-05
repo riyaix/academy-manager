@@ -128,7 +128,7 @@ export function ReportsPage() {
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
                 <XAxis dataKey="month" tick={{ fill: "var(--color-text-muted)", fontSize: 12 }} />
                 <YAxis tick={{ fill: "var(--color-text-muted)", fontSize: 12 }} />
-                <Tooltip formatter={(value) => moneyLabel(Number(value))} />
+                <Tooltip cursor={false} formatter={(value) => moneyLabel(Number(value))} />
                 <Legend />
                 <Bar dataKey="collected" name={t("status.paid")} fill="var(--color-success)" />
                 <Bar dataKey="pending" name={t("status.pending")} fill="var(--color-warning)" />
@@ -147,7 +147,7 @@ export function ReportsPage() {
                     <Cell key={entry.key} fill={PIE_COLORS[index % PIE_COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip formatter={(value) => moneyLabel(Number(value))} />
+                <Tooltip cursor={false} formatter={(value) => moneyLabel(Number(value))} />
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
@@ -167,7 +167,7 @@ export function ReportsPage() {
                   width={120}
                   tick={{ fill: "var(--color-text-muted)", fontSize: 12 }}
                 />
-                <Tooltip formatter={(value) => moneyLabel(Number(value))} />
+                <Tooltip cursor={false} formatter={(value) => moneyLabel(Number(value))} />
                 <Bar dataKey="total" name={t("reports.revenue")} fill="var(--color-primary)" />
               </BarChart>
             </ResponsiveContainer>
@@ -182,7 +182,7 @@ export function ReportsPage() {
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
                 <XAxis dataKey="bucket" tick={{ fill: "var(--color-text-muted)", fontSize: 12 }} />
                 <YAxis tick={{ fill: "var(--color-text-muted)", fontSize: 12 }} />
-                <Tooltip formatter={(value) => moneyLabel(Number(value))} />
+                <Tooltip cursor={false} formatter={(value) => moneyLabel(Number(value))} />
                 <Bar dataKey="total" name={t("reports.overdue")} fill="var(--color-danger)" />
               </BarChart>
             </ResponsiveContainer>

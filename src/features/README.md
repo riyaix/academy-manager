@@ -23,31 +23,26 @@ features/<name>/
 | Import from `core/`, `domain/`, `app/navigation`    | Import sibling features (`../students/...`) |
 | Read data via repositories (`core/storage/`)        | Reach into another feature's store          |
 | User strings via `t('feature.key')` in both locales | Hardcode Spanish/English in JSX             |
-| English identifiers in code                         | `COD_CLI`, `db_clientes`, etc.              |
+| English identifiers in code                         | Legacy abbreviated identifiers              |
 
-## Registration (Phase 2+)
+## Registration
 
 1. Add `ViewId` in `app/navigation/types.ts` if needed.
-2. Export `yourFeature` from `features/<name>/index.ts`.
+2. Export the feature from `features/<name>/index.ts`.
 3. Append to `registeredFeatures` in `app/navigation/registry.ts`.
 
-The app shell (`AppShell` + `FeatureViewport`) renders routes from the registry automatically.
+## Registered features
 
-## Registered features (Phase 2)
-
-| Feature | Folder | Route (`ViewId`) |
-|---------|--------|------------------|
+| Feature | Folder | Route |
+|---------|--------|-------|
 | Dashboard | `dashboard/` | `dashboard` |
-| Billing | `billing/` | `factura` |
-| Payment history | `payment-history/` | `historial` |
-| Students | `students/` | `clientes` |
-| Courses | `courses/` | `productos` |
-| Groups | `groups/` | `grupos` |
-| Calendar | `calendar/` | `calendario` |
-| Settings | `settings/` | `ajustes` |
+| Billing | `billing/` | `billing` |
+| Payment history | `payment-history/` | `payment-history` |
+| Reports | `reports/` | `reports` |
+| Students | `students/` | `students` |
+| Courses | `courses/` | `courses` |
+| Groups | `groups/` | `groups` |
+| Calendar | `calendar/` | `calendar` |
+| Settings | `settings/` | `settings` |
 
-Each feature exposes a `hooks/use*Store.ts` selector over the shared `appStore` (legacy `localStorage` keys preserved until Phase 3).
-
-## Checklist
-
-See [`_template/README.md`](./_template/README.md) for the step-by-step checklist.
+See [`_template/README.md`](./_template/README.md) for the full checklist.

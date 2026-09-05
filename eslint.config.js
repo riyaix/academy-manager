@@ -61,10 +61,10 @@ export default tseslint.config(
   {
     files: ENGLISH_IDENTIFIER_PATHS,
     plugins: {
-      facturador: englishIdentifiersPlugin,
+      "academy-manager": englishIdentifiersPlugin,
     },
     rules: {
-      "facturador/english-identifiers": "error",
+      "academy-manager/english-identifiers": "error",
       "@typescript-eslint/naming-convention": [
         "error",
         {
@@ -92,7 +92,7 @@ export default tseslint.config(
   {
     files: LEGACY_SHELL_PATHS,
     rules: {
-      "facturador/english-identifiers": "off",
+      "academy-manager/english-identifiers": "off",
       "@typescript-eslint/naming-convention": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": "warn",

@@ -10,7 +10,7 @@ use zip::read::ZipArchive;
 use zip::write::SimpleFileOptions;
 use zip::ZipWriter;
 
-const DB_FILE_NAME: &str = "facturador.db";
+const DB_FILE_NAME: &str = "academy-manager.db";
 const METADATA_FILE: &str = "metadata.json";
 const LOGO_FILE: &str = "logo.png";
 
@@ -82,12 +82,12 @@ fn inspect_entries(entries: &HashMap<String, Vec<u8>>) -> Result<BackupInspectio
     let metadata: BackupMetadata =
         serde_json::from_slice(metadata_bytes).map_err(|error| error.to_string())?;
 
-    if metadata.product != "facturador" {
-        return Err("Backup is not a Facturador archive.".to_string());
+    if metadata.product != "academy-manager" {
+        return Err("Backup is not an Academy Manager archive.".to_string());
     }
 
     if !entries.contains_key(DB_FILE_NAME) {
-        return Err("facturador.db is missing from backup.".to_string());
+        return Err("academy-manager.db is missing from backup.".to_string());
     }
 
     Ok(BackupInspection {
@@ -161,7 +161,7 @@ pub fn restore_backup_archive(
 
     let db_bytes = entries
         .get(DB_FILE_NAME)
-        .ok_or_else(|| "facturador.db is missing from backup.".to_string())?;
+        .ok_or_else(|| "academy-manager.db is missing from backup.".to_string())?;
 
     let db_path = resolve_db_path(&app)?;
     if let Some(parent) = db_path.parent() {

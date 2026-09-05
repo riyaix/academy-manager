@@ -159,7 +159,7 @@ export async function ensureSchemaCurrent(db: Database): Promise<number> {
   if (startingVersion > CURRENT_SCHEMA_VERSION) {
     throw new Error(
       `Database schema v${startingVersion} is newer than this app (v${CURRENT_SCHEMA_VERSION}). ` +
-        "Update Facturador to continue.",
+        "Update Academy Manager to continue.",
     );
   }
 
