@@ -69,15 +69,9 @@ export async function getSchemaVersion(db: Database): Promise<SchemaVersionInfo 
  * Run registered data migrations from `fromVersion` to `toVersion` (inclusive).
  * SQL DDL is applied by Tauri before this runs (or by {@link repairPendingSchema}).
  */
-export async function migrate(
-  db: Database,
-  fromVersion: number,
-  toVersion: number,
-): Promise<void> {
+export async function migrate(db: Database, fromVersion: number, toVersion: number): Promise<void> {
   if (fromVersion > toVersion) {
-    throw new Error(
-      `Schema downgrade from v${fromVersion} to v${toVersion} is not supported.`,
-    );
+    throw new Error(`Schema downgrade from v${fromVersion} to v${toVersion} is not supported.`);
   }
 
   for (let version = fromVersion + 1; version <= toVersion; version++) {

@@ -19,9 +19,7 @@ export function buildStudentCourseHistory(
     .filter((enrollment) => enrollment.studentId === studentId)
     .map((enrollment) => {
       const group = classGroups.find((item) => item.classGroupId === enrollment.classGroupId);
-      const course = group
-        ? courses.find((item) => item.courseId === group.courseId)
-        : undefined;
+      const course = group ? courses.find((item) => item.courseId === group.courseId) : undefined;
       const year = enrollment.enrolledAt
         ? new Date(enrollment.enrolledAt).getFullYear()
         : new Date().getFullYear();

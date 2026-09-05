@@ -14,16 +14,7 @@ import {
 import { studentDisplayName } from "../../../domain/student";
 import { DuplicateBatchWarning } from "./DuplicateBatchWarning";
 import { useBillingStore } from "../hooks/useBillingStore";
-import {
-  FileText,
-  Plus,
-  Trash2,
-  Users,
-  Layers,
-  Zap,
-  AlertCircle,
-  RotateCcw,
-} from "lucide-react";
+import { FileText, Plus, Trash2, Users, Layers, Zap, AlertCircle, RotateCcw } from "lucide-react";
 
 type BillingMode = "lote" | "manual";
 type ManualLineField = "description" | "quantity" | "unitPrice";
@@ -176,9 +167,7 @@ export function BillingForm({ initialModo = "lote" }: BillingFormProps) {
   // MANUAL BILLING
   // ==========================================
   const [selectedStudentId, setSelectedStudentId] = useState("");
-  const [manualIssueDate, setManualIssueDate] = useState(
-    new Date().toISOString().split("T")[0],
-  );
+  const [manualIssueDate, setManualIssueDate] = useState(new Date().toISOString().split("T")[0]);
   const [manualPaymentMethod, setManualPaymentMethod] = useState("");
   const [manualLineItems, setManualLineItems] = useState<PaymentLineItem[]>([emptyLineItem()]);
 
@@ -298,7 +287,9 @@ export function BillingForm({ initialModo = "lote" }: BillingFormProps) {
               <h3 className="font-bold text-[var(--color-primary)] mb-2 flex items-center">
                 <Layers className="w-5 h-5 mr-2" /> {t("billing.step1Title")}
               </h3>
-              <p className="text-sm text-[var(--color-primary)]/80 mb-4">{t("billing.step1Hint")}</p>
+              <p className="text-sm text-[var(--color-primary)]/80 mb-4">
+                {t("billing.step1Hint")}
+              </p>
 
               <label className="font-bold text-[var(--color-text)] text-sm mb-1 block">
                 {t("billing.billingPeriodLabel")}
@@ -332,7 +323,8 @@ export function BillingForm({ initialModo = "lote" }: BillingFormProps) {
               <div className="flex justify-between items-end mb-4">
                 <div>
                   <h3 className="font-bold text-[var(--color-text)] mb-1 flex items-center">
-                    <Users className="w-5 h-5 mr-2 text-[var(--color-text-muted)]" /> {t("billing.step2Title")}
+                    <Users className="w-5 h-5 mr-2 text-[var(--color-text-muted)]" />{" "}
+                    {t("billing.step2Title")}
                   </h3>
                   <p className="text-sm text-[var(--color-text-muted)]">{t("billing.step2Hint")}</p>
                 </div>
@@ -432,7 +424,10 @@ export function BillingForm({ initialModo = "lote" }: BillingFormProps) {
                         </p>
                         <div className="mt-1 space-y-1">
                           {draft.lineItems.map((line, i) => (
-                            <p key={i} className="text-[10px] text-[var(--color-text-muted)] truncate">
+                            <p
+                              key={i}
+                              className="text-[10px] text-[var(--color-text-muted)] truncate"
+                            >
                               - {line.description}
                             </p>
                           ))}
@@ -451,15 +446,19 @@ export function BillingForm({ initialModo = "lote" }: BillingFormProps) {
 
             <div className="p-5 bg-[var(--color-surface)] border-t border-[var(--color-border)] shrink-0">
               <div className="flex justify-between items-center mb-4">
-                <p className="text-[var(--color-text-muted)] font-medium text-sm">{t("billing.totalRecordsLabel")}</p>
-                <p className="font-black text-2xl text-[var(--color-text)]">{batchPreview.length}</p>
+                <p className="text-[var(--color-text-muted)] font-medium text-sm">
+                  {t("billing.totalRecordsLabel")}
+                </p>
+                <p className="font-black text-2xl text-[var(--color-text)]">
+                  {batchPreview.length}
+                </p>
               </div>
               <div className="flex justify-between items-center mb-6">
-                <p className="text-[var(--color-text-muted)] font-medium text-sm">{t("billing.estimatedVolumeLabel")}</p>
+                <p className="text-[var(--color-text-muted)] font-medium text-sm">
+                  {t("billing.estimatedVolumeLabel")}
+                </p>
                 <p className="font-black text-2xl text-[var(--color-success)]">
-                  {fromMoney(
-                    addMoney(...batchPreview.map((draft) => draft.total)),
-                  ).toFixed(2)} €
+                  {fromMoney(addMoney(...batchPreview.map((draft) => draft.total))).toFixed(2)} €
                 </p>
               </div>
 
@@ -552,10 +551,18 @@ export function BillingForm({ initialModo = "lote" }: BillingFormProps) {
               <table className="w-full text-left text-sm whitespace-nowrap">
                 <thead className="bg-[var(--color-surface-elevated)] border-b border-[var(--color-border)] text-xs uppercase text-[var(--color-text-muted)]">
                   <tr>
-                    <th scope="col" className="px-6 py-3 font-bold w-1/3">{t("billing.catalogOptional")}</th>
-                    <th scope="col" className="px-6 py-3 font-bold w-full">{t("billing.conceptDescription")}</th>
-                    <th scope="col" className="px-6 py-3 font-bold text-center w-24">{t("billing.quantity")}</th>
-                    <th scope="col" className="px-6 py-3 font-bold text-right w-32">{t("billing.unitPrice")}</th>
+                    <th scope="col" className="px-6 py-3 font-bold w-1/3">
+                      {t("billing.catalogOptional")}
+                    </th>
+                    <th scope="col" className="px-6 py-3 font-bold w-full">
+                      {t("billing.conceptDescription")}
+                    </th>
+                    <th scope="col" className="px-6 py-3 font-bold text-center w-24">
+                      {t("billing.quantity")}
+                    </th>
+                    <th scope="col" className="px-6 py-3 font-bold text-right w-32">
+                      {t("billing.unitPrice")}
+                    </th>
                     <th className="px-6 py-3 font-bold text-center w-16"></th>
                   </tr>
                 </thead>

@@ -23,11 +23,7 @@ import {
   topStudentsByRevenue,
 } from "../../domain/reports";
 
-const PIE_COLORS = [
-  "var(--color-success)",
-  "var(--color-warning)",
-  "var(--color-danger)",
-];
+const PIE_COLORS = ["var(--color-success)", "var(--color-warning)", "var(--color-danger)"];
 
 export function ReportsPage() {
   const { t, i18n } = useTranslation();
@@ -155,7 +151,9 @@ export function ReportsPage() {
         </section>
 
         <section className="rounded-xl border border-[var(--color-border)] p-4">
-          <h2 className="font-bold text-[var(--color-text)] mb-4">{t("reports.topStudentsTitle")}</h2>
+          <h2 className="font-bold text-[var(--color-text)] mb-4">
+            {t("reports.topStudentsTitle")}
+          </h2>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={topStudents} layout="vertical" margin={{ left: 24 }}>

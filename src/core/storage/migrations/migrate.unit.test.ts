@@ -3,10 +3,7 @@ import { CURRENT_SCHEMA_VERSION } from "../constants";
 import { ensureSchemaCurrent, migrate, repairPendingSchema } from "./migrate";
 import * as registry from "./registry";
 
-function createMockDb(options: {
-  schemaVersion: number | null;
-  columns?: string[];
-}) {
+function createMockDb(options: { schemaVersion: number | null; columns?: string[] }) {
   const columns = new Set(options.columns ?? ["record_id", "status"]);
   let schemaVersion = options.schemaVersion;
 

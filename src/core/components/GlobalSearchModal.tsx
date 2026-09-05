@@ -1,12 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  BookOpen,
-  FileText,
-  FolderKanban,
-  Search,
-  UserRound,
-} from "lucide-react";
+import { BookOpen, FileText, FolderKanban, Search, UserRound } from "lucide-react";
 import { Modal } from "./Modal";
 import { searchAppEntities, type GlobalSearchResult } from "../../domain/search";
 import { useAppStore } from "../../app/store/appStore";

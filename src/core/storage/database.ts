@@ -31,8 +31,7 @@ async function loadDatabaseWithRetry(attempt: number): Promise<Database> {
     // Migration checksum / version errors will not succeed on retry: the plugin
     // removes the migration list from memory before apply, so a second load
     // opens the DB without migrating.
-    const nonRetryable =
-      /migration|checksum|version mismatch|modified|dirty/i.test(message);
+    const nonRetryable = /migration|checksum|version mismatch|modified|dirty/i.test(message);
 
     if (nonRetryable || attempt >= MAX_LOAD_ATTEMPTS) {
       throw error;

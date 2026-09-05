@@ -8,7 +8,12 @@ export {
   CardTitle,
   type CardProps,
 } from "./Card";
-export { DataTable, type DataTableColumn, type DataTableProps, type SortDirection } from "./DataTable";
+export {
+  DataTable,
+  type DataTableColumn,
+  type DataTableProps,
+  type SortDirection,
+} from "./DataTable";
 export { Input, type InputProps } from "./Input";
 export { Modal, type ModalProps } from "./Modal";
 export { Select, type SelectProps } from "./Select";

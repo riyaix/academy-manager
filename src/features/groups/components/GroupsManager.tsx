@@ -312,9 +312,7 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
         )
         .map((enrollment) => {
           const student = clientes.find((client) => client.studentId === enrollment.studentId);
-          return student
-            ? studentDisplayName(student)
-            : t("groups.enrollments.unknownStudent");
+          return student ? studentDisplayName(student) : t("groups.enrollments.unknownStudent");
         })
         .sort((a, b) => a.localeCompare(b));
 
@@ -425,7 +423,9 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
       className={`px-6 py-4 cursor-pointer hover:bg-[var(--color-surface-muted)] transition-colors group ${isCenter ? "text-center" : "text-left"}`}
       onClick={() => solicitarOrden(sortKey)}
     >
-      <div className={`flex items-center gap-1 text-[var(--color-text)] ${isCenter ? "justify-center" : ""}`}>
+      <div
+        className={`flex items-center gap-1 text-[var(--color-text)] ${isCenter ? "justify-center" : ""}`}
+      >
         {label}
         <ArrowUpDown
           className={`w-3 h-3 ${sortConfig.key === sortKey ? "text-[var(--color-primary)]" : "text-[var(--color-text-muted)] group-hover:text-[var(--color-text-muted)]"}`}
@@ -473,13 +473,17 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
                   : t("groups.createTitle")}
               </h3>
               {!editandoGrupoId && (
-                <span className="text-[var(--color-on-primary)]/80">{obtenerSiguienteIdGrupo()}</span>
+                <span className="text-[var(--color-on-primary)]/80">
+                  {obtenerSiguienteIdGrupo()}
+                </span>
               )}
             </div>
 
             <div className="p-6 grid grid-cols-1 md:grid-cols-6 gap-4 text-sm bg-[var(--color-surface)]">
               <div className="flex flex-col md:col-span-2">
-                <label className="font-semibold text-[var(--color-text)] mb-1">{t("groups.name")}</label>
+                <label className="font-semibold text-[var(--color-text)] mb-1">
+                  {t("groups.name")}
+                </label>
                 <input
                   type="text"
                   value={nuevoGrupo.name}
@@ -490,7 +494,9 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
               </div>
 
               <div className="flex flex-col md:col-span-3">
-                <label className="font-semibold text-[var(--color-text)] mb-1">{t("groups.linkedCourse")}</label>
+                <label className="font-semibold text-[var(--color-text)] mb-1">
+                  {t("groups.linkedCourse")}
+                </label>
                 <select
                   value={nuevoGrupo.courseId}
                   onChange={(e) => setNuevoGrupo({ ...nuevoGrupo, courseId: e.target.value })}
@@ -506,7 +512,9 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
               </div>
 
               <div className="flex flex-col md:col-span-1">
-                <label className="font-semibold text-[var(--color-text)] mb-1 text-center">{t("groups.status")}</label>
+                <label className="font-semibold text-[var(--color-text)] mb-1 text-center">
+                  {t("groups.status")}
+                </label>
                 <select
                   value={nuevoGrupo.status}
                   onChange={(e) =>
@@ -523,7 +531,9 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
               </div>
 
               <div className="flex flex-col md:col-span-2">
-                <label className="font-semibold text-[var(--color-text)] mb-1">{t("groups.startDate")}</label>
+                <label className="font-semibold text-[var(--color-text)] mb-1">
+                  {t("groups.startDate")}
+                </label>
                 <input
                   type="date"
                   value={nuevoGrupo.startDate}
@@ -533,7 +543,9 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
               </div>
 
               <div className="flex flex-col md:col-span-2">
-                <label className="font-semibold text-[var(--color-text)] mb-1">{t("groups.endDate")}</label>
+                <label className="font-semibold text-[var(--color-text)] mb-1">
+                  {t("groups.endDate")}
+                </label>
                 <input
                   type="date"
                   value={nuevoGrupo.endDate}
@@ -543,7 +555,9 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
               </div>
 
               <div className="flex flex-col md:col-span-2">
-                <label className="font-semibold text-[var(--color-text)] mb-1">{t("groups.maxCapacity")}</label>
+                <label className="font-semibold text-[var(--color-text)] mb-1">
+                  {t("groups.maxCapacity")}
+                </label>
                 <input
                   type="number"
                   value={nuevoGrupo.capacity}
@@ -554,7 +568,9 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
               </div>
 
               <div className="flex flex-col md:col-span-6 border-t border-[var(--color-border)] pt-4 mt-2">
-                <label className="font-semibold text-[var(--color-text)] mb-2">{t("groups.weekdaysLabel")}</label>
+                <label className="font-semibold text-[var(--color-text)] mb-2">
+                  {t("groups.weekdaysLabel")}
+                </label>
                 <div className="flex gap-2">
                   {diasSemana.map((dia) => (
                     <button
@@ -569,7 +585,9 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
               </div>
 
               <div className="flex flex-col md:col-span-2">
-                <label className="font-semibold text-[var(--color-text)] mb-1">{t("groups.startTime")}</label>
+                <label className="font-semibold text-[var(--color-text)] mb-1">
+                  {t("groups.startTime")}
+                </label>
                 <input
                   type="time"
                   step="900"
@@ -580,7 +598,9 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
               </div>
 
               <div className="flex flex-col md:col-span-2">
-                <label className="font-semibold text-[var(--color-text)] mb-1">{t("groups.endTime")}</label>
+                <label className="font-semibold text-[var(--color-text)] mb-1">
+                  {t("groups.endTime")}
+                </label>
                 <input
                   type="time"
                   step="900"
@@ -591,7 +611,9 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
               </div>
 
               <div className="flex flex-col md:col-span-2">
-                <label className="font-semibold text-[var(--color-text)] mb-1">{t("groups.calendarColor")}</label>
+                <label className="font-semibold text-[var(--color-text)] mb-1">
+                  {t("groups.calendarColor")}
+                </label>
                 <div className="flex gap-1 h-10 items-center bg-[var(--color-surface-elevated)] border border-[var(--color-border)] rounded-lg px-2">
                   {paletaColores.map((color) => (
                     <button
@@ -649,9 +671,7 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
               </div>
               <select
                 value={filtroEstado}
-                onChange={(e) =>
-                  setFiltroEstado(e.target.value as "all" | ClassGroupStatus)
-                }
+                onChange={(e) => setFiltroEstado(e.target.value as "all" | ClassGroupStatus)}
                 className="border border-[var(--color-border)] rounded-lg px-4 outline-none focus:ring-2 focus:ring-[var(--color-primary)] bg-[var(--color-surface-elevated)] font-semibold text-[var(--color-text)] cursor-pointer"
               >
                 <option value="all">{t("groups.directory.filterAll")}</option>
@@ -688,14 +708,20 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
               <tbody className="divide-y divide-gray-100 bg-[var(--color-surface-elevated)]">
                 {gruposMostrar.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-6 py-10 text-center text-[var(--color-text-muted)]">
+                    <td
+                      colSpan={7}
+                      className="px-6 py-10 text-center text-[var(--color-text-muted)]"
+                    >
                       {t("groups.directory.noMatch")}
                     </td>
                   </tr>
                 ) : (
                   gruposMostrar.map((grupo) => {
                     const isHex = isHexColor(grupo.colorClass);
-                    const numAlumnos = countActiveEnrollmentsInGroup(grupo.classGroupId, matriculas);
+                    const numAlumnos = countActiveEnrollmentsInGroup(
+                      grupo.classGroupId,
+                      matriculas,
+                    );
                     const nombreCurso =
                       productos.find((course) => course.courseId === grupo.courseId)?.courseName ||
                       t("groups.directory.courseNotFound");
@@ -732,7 +758,9 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
                             />
                           )}
                         </td>
-                        <td className="px-6 py-4 font-semibold text-[var(--color-primary)]">{nombreCurso}</td>
+                        <td className="px-6 py-4 font-semibold text-[var(--color-primary)]">
+                          {nombreCurso}
+                        </td>
                         <td className="px-6 py-4">
                           <p className="font-bold text-[var(--color-text)]">
                             {grupo.startTime} - {grupo.endTime}
@@ -817,7 +845,10 @@ export function GroupsManager({ openNewGroupForm = false }: GroupsManagerProps) 
                 grupos
                   .filter((group) => group.status !== "archived")
                   .map((grupo) => {
-                    const numAlumnos = countActiveEnrollmentsInGroup(grupo.classGroupId, matriculas);
+                    const numAlumnos = countActiveEnrollmentsInGroup(
+                      grupo.classGroupId,
+                      matriculas,
+                    );
                     const isHex = isHexColor(grupo.colorClass);
                     const isLleno = isGroupAtCapacity(
                       grupo.classGroupId,

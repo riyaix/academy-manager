@@ -193,7 +193,9 @@ export function StudentImportModal({
       {step === "upload" ? (
         <div className="flex flex-col items-center justify-center gap-4 rounded-xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-12 text-center">
           <Upload className="size-10 text-[var(--color-primary)]" aria-hidden />
-          <p className="text-sm text-[var(--color-text-muted)]">{t("students.import.uploadHint")}</p>
+          <p className="text-sm text-[var(--color-text-muted)]">
+            {t("students.import.uploadHint")}
+          </p>
           <input
             ref={fileInputRef}
             type="file"

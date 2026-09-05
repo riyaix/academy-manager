@@ -82,7 +82,9 @@ export function FixedCostsPanel({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         {fields.map((field) => (
           <div key={field.key}>
-            <label className="font-bold text-(--color-text) text-sm mb-1 block">{field.label}</label>
+            <label className="font-bold text-(--color-text) text-sm mb-1 block">
+              {field.label}
+            </label>
             <div className="relative">
               <input
                 type="number"

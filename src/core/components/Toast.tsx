@@ -40,8 +40,7 @@ const DEFAULT_DURATION = 4000;
 const variantStyles: Record<ToastVariant, string> = {
   success:
     "border-[var(--color-border)] bg-[var(--color-success-surface)] text-[var(--color-text)]",
-  error:
-    "border-[var(--color-border)] bg-[var(--color-danger-surface)] text-[var(--color-text)]",
+  error: "border-[var(--color-border)] bg-[var(--color-danger-surface)] text-[var(--color-text)]",
   warning:
     "border-[var(--color-border)] bg-[var(--color-warning-surface)] text-[var(--color-text)]",
   info: "border-[var(--color-border)] bg-[var(--color-info-surface)] text-[var(--color-text)]",

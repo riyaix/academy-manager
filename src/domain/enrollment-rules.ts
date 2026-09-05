@@ -1,9 +1,6 @@
 import type { Enrollment } from "./enrollment";
 
-export function countActiveEnrollmentsInGroup(
-  groupId: string,
-  enrollments: Enrollment[],
-): number {
+export function countActiveEnrollmentsInGroup(groupId: string, enrollments: Enrollment[]): number {
   return enrollments.filter(
     (enrollment) => enrollment.classGroupId === groupId && enrollment.status === "active",
   ).length;

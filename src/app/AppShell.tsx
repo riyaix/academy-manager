@@ -138,7 +138,10 @@ export function AppShell() {
     return (
       <>
         {section !== "main" && (
-          <div className="border-t border-[var(--color-sidebar-border)] my-4 pt-2" role="separator" />
+          <div
+            className="border-t border-[var(--color-sidebar-border)] my-4 pt-2"
+            role="separator"
+          />
         )}
         {items.map((item) => (
           <NavButton

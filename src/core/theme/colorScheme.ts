@@ -4,16 +4,12 @@ export const COLOR_SCHEME_STORAGE_KEY = "academy_manager_color_scheme";
 
 const VALID: ReadonlySet<string> = new Set(["system", "light", "dark"]);
 
-export function normalizeColorScheme(
-  value: string | null | undefined,
-): ColorSchemePreference {
+export function normalizeColorScheme(value: string | null | undefined): ColorSchemePreference {
   if (value && VALID.has(value)) return value as ColorSchemePreference;
   return "system";
 }
 
-export function resolveEffectiveScheme(
-  preference: ColorSchemePreference,
-): "light" | "dark" {
+export function resolveEffectiveScheme(preference: ColorSchemePreference): "light" | "dark" {
   if (preference === "light" || preference === "dark") return preference;
   if (typeof window === "undefined" || !window.matchMedia) return "light";
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";

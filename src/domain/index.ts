@@ -36,14 +36,8 @@ export {
 } from "./enrollment-rules";
 export { formatBillingPeriod, billingPeriodFromParts } from "./billing-period";
 export { suggestedIncomeTaxReserve } from "./income-tax-reserve";
-export {
-  buildPaymentPeriodReportCsv,
-  paymentRecordToReportRow,
-} from "./payment-period-report";
-export type {
-  PaymentPeriodReportHeaders,
-  PaymentPeriodReportRow,
-} from "./payment-period-report";
+export { buildPaymentPeriodReportCsv, paymentRecordToReportRow } from "./payment-period-report";
+export type { PaymentPeriodReportHeaders, PaymentPeriodReportRow } from "./payment-period-report";
 export {
   netCollectedAfterFixedCosts,
   sumMonthlyFixedCosts,
@@ -77,11 +71,7 @@ export {
   summarizePaymentStatusBreakdown,
   topStudentsByRevenue,
 } from "./reports";
-export type {
-  OverdueAgingBucket,
-  PaymentStatusBreakdown,
-  StudentRevenueRow,
-} from "./reports";
+export type { OverdueAgingBucket, PaymentStatusBreakdown, StudentRevenueRow } from "./reports";
 export {
   applyStudentImport,
   buildStudentImportPreview,

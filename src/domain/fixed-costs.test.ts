@@ -24,8 +24,8 @@ describe("totalFixedCostsForRange", () => {
     expect(
       fromMoney(
         totalFixedCostsForRange(sampleCosts, {
-        from: "2026-01-01",
-        to: "2026-03-31",
+          from: "2026-01-01",
+          to: "2026-03-31",
         }),
       ),
     ).toBe(3000);
@@ -37,8 +37,8 @@ describe("netCollectedAfterFixedCosts", () => {
     expect(
       fromMoney(
         netCollectedAfterFixedCosts(toMoney(5000), sampleCosts, {
-        from: "2026-01-01",
-        to: "2026-02-28",
+          from: "2026-01-01",
+          to: "2026-02-28",
         }),
       ),
     ).toBe(3000);

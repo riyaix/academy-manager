@@ -4,7 +4,10 @@ import { getDatabase } from "../database";
 import { migrateAppearanceLogoToFilesystem } from "../migrateAppearanceLogo";
 import { runInTransaction } from "../sql";
 import { normalizeTaxMode } from "../../../domain/settings";
-import { fixedCostsToLegacyFixedCosts, legacyFixedCostsToFixedCosts } from "../../../domain/legacy-mappers";
+import {
+  fixedCostsToLegacyFixedCosts,
+  legacyFixedCostsToFixedCosts,
+} from "../../../domain/legacy-mappers";
 import type { LegacyFixedCosts, LegacyOrganizationSettings } from "../../../domain/legacy";
 
 export type BrandingSettings = {
@@ -114,8 +117,7 @@ export async function loadAppSettings(defaults: AppSettingsSnapshot): Promise<Ap
   const migratedAppearance = await migrateAppearanceLogoToFilesystem(appearance);
   const shouldPersistAppearance =
     migratedAppearance.logoPath !== appearance.logoPath ||
-    (appearance as AppearanceSettingsSlice & { logoDataUrl?: string | null }).logoDataUrl !=
-      null;
+    (appearance as AppearanceSettingsSlice & { logoDataUrl?: string | null }).logoDataUrl != null;
 
   const rawOrganization = parseSection(byKey.get("organization") ?? "", defaults.organization);
   const rawFixedCosts = parseSection(byKey.get("fixed_costs") ?? "", defaults.fixedCosts);

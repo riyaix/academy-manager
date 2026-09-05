@@ -51,7 +51,11 @@ export class FeatureErrorBoundary extends Component<
             <p className="font-mono text-xs text-[var(--color-text-muted)]">{this.state.message}</p>
           ) : null}
         </div>
-        <Button type="button" onClick={this.handleReload} leftIcon={<RotateCcw className="size-4" aria-hidden />}>
+        <Button
+          type="button"
+          onClick={this.handleReload}
+          leftIcon={<RotateCcw className="size-4" aria-hidden />}
+        >
           {this.props.reloadLabel}
         </Button>
       </div>

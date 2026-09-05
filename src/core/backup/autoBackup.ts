@@ -1,9 +1,5 @@
 import { useAppStore } from "../../app/store/appStore";
-import {
-  buildDefaultBackupFilename,
-  exportBackupToPath,
-  joinBackupPath,
-} from "./exportBackup";
+import { buildDefaultBackupFilename, exportBackupToPath, joinBackupPath } from "./exportBackup";
 import { isTauriRuntime } from "../storage/runtime";
 
 /** Minimum interval between automatic backups (7 days). */

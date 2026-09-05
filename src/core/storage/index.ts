@@ -13,12 +13,7 @@ export {
   defaultFixedCosts,
   defaultOrganization,
 } from "./defaultAppState";
-export {
-  closeDatabase,
-  getDatabase,
-  initializeDatabase,
-  type SchemaVersionRow,
-} from "./database";
+export { closeDatabase, getDatabase, initializeDatabase, type SchemaVersionRow } from "./database";
 export {
   ensureSchemaCurrent,
   getMigration,
@@ -32,11 +27,7 @@ export {
 } from "./migrations";
 export { loadPersistedAppState, persistAppStoreField } from "./appStatePersistence";
 export type { PersistedAppState } from "./persistedState";
-export {
-  isDatabaseEmpty,
-  persistFullAppState,
-  seedDatabaseIfEmpty,
-} from "./seedDatabase";
+export { isDatabaseEmpty, persistFullAppState, seedDatabaseIfEmpty } from "./seedDatabase";
 export {
   classGroupRepository,
   courseRepository,

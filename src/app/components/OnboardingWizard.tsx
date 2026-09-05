@@ -1,13 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { open } from "@tauri-apps/plugin-dialog";
-import {
-  Building2,
-  ChevronRight,
-  FolderOpen,
-  Globe,
-  Sparkles,
-} from "lucide-react";
+import { Building2, ChevronRight, FolderOpen, Globe, Sparkles } from "lucide-react";
 import { Button } from "../../core/components/Button";
 import { Modal } from "../../core/components/Modal";
 import { useToast } from "../../core/components/Toast";
@@ -31,9 +25,7 @@ export function OnboardingWizard() {
 
   const [step, setStep] = useState<OnboardingStep>("welcome");
   const [name, setName] = useState(appName);
-  const [locale, setLocale] = useState<"es" | "en">(
-    i18n.language === "en" ? "en" : "es",
-  );
+  const [locale, setLocale] = useState<"es" | "en">(i18n.language === "en" ? "en" : "es");
   const [backupEnabled, setBackupEnabled] = useState(autoBackupEnabled);
   const [backupFolder, setBackupFolder] = useState(autoBackupFolderPath ?? "");
 
@@ -138,7 +130,9 @@ export function OnboardingWizard() {
               <Sparkles className="mt-0.5 h-5 w-5 shrink-0" aria-hidden />
               <div>
                 <h3 className="font-semibold">{t("onboarding.welcomeTitle")}</h3>
-                <p className="mt-1 text-sm text-[var(--color-primary)]">{t("onboarding.welcomeBody")}</p>
+                <p className="mt-1 text-sm text-[var(--color-primary)]">
+                  {t("onboarding.welcomeBody")}
+                </p>
               </div>
             </div>
             <label className="block text-sm font-semibold text-[var(--color-text)]">
@@ -163,10 +157,17 @@ export function OnboardingWizard() {
         {step === "locale" ? (
           <section className="space-y-4">
             <div className="flex items-start gap-3 rounded-lg bg-[var(--color-surface)] p-4">
-              <Globe className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-text-muted)]" aria-hidden />
+              <Globe
+                className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-text-muted)]"
+                aria-hidden
+              />
               <div>
-                <h3 className="font-semibold text-[var(--color-text)]">{t("onboarding.localeTitle")}</h3>
-                <p className="mt-1 text-sm text-[var(--color-text-muted)]">{t("onboarding.localeBody")}</p>
+                <h3 className="font-semibold text-[var(--color-text)]">
+                  {t("onboarding.localeTitle")}
+                </h3>
+                <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+                  {t("onboarding.localeBody")}
+                </p>
               </div>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -191,10 +192,17 @@ export function OnboardingWizard() {
         {step === "backup" ? (
           <section className="space-y-4">
             <div className="flex items-start gap-3 rounded-lg bg-[var(--color-surface)] p-4">
-              <FolderOpen className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-text-muted)]" aria-hidden />
+              <FolderOpen
+                className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-text-muted)]"
+                aria-hidden
+              />
               <div>
-                <h3 className="font-semibold text-[var(--color-text)]">{t("onboarding.backupTitle")}</h3>
-                <p className="mt-1 text-sm text-[var(--color-text-muted)]">{t("onboarding.backupBody")}</p>
+                <h3 className="font-semibold text-[var(--color-text)]">
+                  {t("onboarding.backupTitle")}
+                </h3>
+                <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+                  {t("onboarding.backupBody")}
+                </p>
               </div>
             </div>
             <label className="flex items-center gap-3 text-sm font-medium text-[var(--color-text)]">

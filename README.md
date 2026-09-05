@@ -9,32 +9,38 @@ Built with **Tauri 2**, **React 19**, **TypeScript**, **Tailwind CSS 4**, and **
 ## Features
 
 ### Students
+
 - Master-detail list with side panel
 - CSV and Excel import with column mapping, duplicate detection, and import log
 - CSV and PDF export of the current list
 
 ### Courses and class groups
+
 - Course catalog with monthly fees
 - Class groups with capacity, schedule, weekdays, and color labels
 - Enrollment management per group
 
 ### Calendar
+
 - Daily, weekly, and monthly views
 - Today column highlight and locale-aware long dates
 - Group sessions with capacity at a glance
 
 ### Billing
+
 - Batch monthly payment records by billing period and groups
 - Manual one-off payment records
 - Duplicate billing warnings for the same period
 - Sequential record numbers and tax settings from organization preferences
 
 ### Payment history
+
 - Filterable list of paid, pending, and voided records
 - In-app PDF receipt preview
 - CSV and PDF export of filtered results
 
 ### Reports
+
 - Monthly income bar chart (collected vs pending)
 - Payment status breakdown
 - Top students by revenue
@@ -42,15 +48,18 @@ Built with **Tauri 2**, **React 19**, **TypeScript**, **Tailwind CSS 4**, and **
 - Optional date range filter
 
 ### Dashboard
+
 - Active students, groups, occupancy, and alerts
 - Today’s classes and pending payments
 - Quick link to batch billing
 
 ### Search and navigation
+
 - Global search palette (`Ctrl+K`) across students, payments, courses, and groups
 - Keyboard shortcuts for common actions (`Ctrl+N`, `Ctrl+?`, and more)
 
 ### Settings and data
+
 - Organization name, logo, locale (Spanish default, English available)
 - Tax mode and rates for internal records
 - Theme (system / light / dark) and font size
@@ -112,16 +121,16 @@ Each feature registers in `app/navigation/registry.ts` and must not import sibli
 
 ## Keyboard shortcuts
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+K` | Global search |
-| `Ctrl+N` | New student |
+| Shortcut       | Action                    |
+| -------------- | ------------------------- |
+| `Ctrl+K`       | Global search             |
+| `Ctrl+N`       | New student               |
 | `Ctrl+Shift+N` | New manual payment record |
-| `Ctrl+1` | Dashboard |
-| `Ctrl+2` | Students |
-| `Ctrl+3` | Billing |
-| `Ctrl+,` | Settings |
-| `Ctrl+?` | Shortcuts help |
+| `Ctrl+1`       | Dashboard                 |
+| `Ctrl+2`       | Students                  |
+| `Ctrl+3`       | Billing                   |
+| `Ctrl+,`       | Settings                  |
+| `Ctrl+?`       | Shortcuts help            |
 
 ## License
 

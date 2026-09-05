@@ -26,10 +26,7 @@ import { PaymentRecordPreviewModal } from "../../../core/components/PaymentRecor
 import { usePaymentHistoryStore } from "../hooks/usePaymentHistoryStore";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import {
-  translateDomainStatus,
-  translateRecordStatusFilter,
-} from "../../../core/i18n/legacyUi";
+import { translateDomainStatus, translateRecordStatusFilter } from "../../../core/i18n/legacyUi";
 import { summarizePaymentRecordTotals } from "../../../domain/income-summary";
 import { fromMoney } from "../../../domain/money";
 import { normalizeTaxMode } from "../../../domain/settings";
@@ -41,9 +38,7 @@ type PaymentHistoryManagerProps = {
   initialStatusFilter?: PaymentStatusFilter;
 };
 
-export function PaymentHistoryManager({
-  initialStatusFilter = "all",
-}: PaymentHistoryManagerProps) {
+export function PaymentHistoryManager({ initialStatusFilter = "all" }: PaymentHistoryManagerProps) {
   const { t, i18n } = useTranslation();
   const { confirm } = useConfirm();
   const { toast } = useToast();
@@ -89,7 +84,9 @@ export function PaymentHistoryManager({
         const coincideEstado = filtroEstado === "all" || record.status === filtroEstado;
         const coincideMetodo =
           filtroMetodoPago === "Todos" ||
-          (filtroMetodoPago === "__none__" ? !record.paymentMethod : record.paymentMethod === filtroMetodoPago);
+          (filtroMetodoPago === "__none__"
+            ? !record.paymentMethod
+            : record.paymentMethod === filtroMetodoPago);
 
         // Lógica del Rango de Fechas
         let coincideFecha = true;
@@ -257,7 +254,9 @@ export function PaymentHistoryManager({
       {/* CABECERA */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-[var(--color-border)] pb-4 shrink-0 gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--color-text)] mb-1">{t("paymentHistory.title")}</h1>
+          <h1 className="text-2xl font-bold text-[var(--color-text)] mb-1">
+            {t("paymentHistory.title")}
+          </h1>
           <p className="text-sm text-[var(--color-text-muted)]">{t("paymentHistory.subtitle")}</p>
         </div>
         <div className="flex flex-col sm:flex-row items-center gap-3">
@@ -419,19 +418,36 @@ export function PaymentHistoryManager({
         <table className="min-w-full text-left text-sm whitespace-nowrap">
           <thead className="bg-[var(--color-surface)] uppercase tracking-wider text-[var(--color-text-muted)] text-xs font-bold sticky top-0 border-b border-[var(--color-border)] z-10">
             <tr>
-              <th scope="col" className="px-6 py-4">{t("paymentHistory.columns.recordNumber")}</th>
-              <th scope="col" className="px-6 py-4">{t("common.date")}</th>
-              <th scope="col" className="px-6 py-4">{t("paymentHistory.columns.client")}</th>
-              <th scope="col" className="px-6 py-4">{t("paymentHistory.columns.paymentMethod")}</th>
-              <th scope="col" className="px-6 py-4 text-right">{t("common.amount")}</th>
-              <th scope="col" className="px-6 py-4 text-center">{t("common.status")}</th>
-              <th scope="col" className="px-6 py-4 text-right">{t("common.actions")}</th>
+              <th scope="col" className="px-6 py-4">
+                {t("paymentHistory.columns.recordNumber")}
+              </th>
+              <th scope="col" className="px-6 py-4">
+                {t("common.date")}
+              </th>
+              <th scope="col" className="px-6 py-4">
+                {t("paymentHistory.columns.client")}
+              </th>
+              <th scope="col" className="px-6 py-4">
+                {t("paymentHistory.columns.paymentMethod")}
+              </th>
+              <th scope="col" className="px-6 py-4 text-right">
+                {t("common.amount")}
+              </th>
+              <th scope="col" className="px-6 py-4 text-center">
+                {t("common.status")}
+              </th>
+              <th scope="col" className="px-6 py-4 text-right">
+                {t("common.actions")}
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 bg-[var(--color-surface-elevated)]">
             {facturasFiltradas.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-6 py-10 text-center text-[var(--color-text-muted)] text-base">
+                <td
+                  colSpan={7}
+                  className="px-6 py-10 text-center text-[var(--color-text-muted)] text-base"
+                >
                   {t("paymentHistory.empty")}
                 </td>
               </tr>
@@ -446,13 +462,17 @@ export function PaymentHistoryManager({
                     key={record.recordId}
                     className={`hover:bg-[var(--color-info-surface)]/50 transition-colors ${esAnulada ? "opacity-60 bg-[var(--color-surface)]" : ""}`}
                   >
-                    <td className="px-6 py-4 font-bold text-[var(--color-text)]">{record.recordId}</td>
+                    <td className="px-6 py-4 font-bold text-[var(--color-text)]">
+                      {record.recordId}
+                    </td>
                     <td className="px-6 py-4 text-[var(--color-text-muted)] font-medium">
                       {formatearFechaStr(record.issuedOn)}
                     </td>
                     <td className="px-6 py-4">
                       <p className="font-bold text-[var(--color-text)]">{record.payerName}</p>
-                      <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{record.studentId}</p>
+                      <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+                        {record.studentId}
+                      </p>
                     </td>
                     <td className="px-6 py-4 text-[var(--color-text-muted)] font-medium">
                       {record.paymentMethod || t("paymentHistory.noPaymentMethod")}
@@ -469,8 +489,7 @@ export function PaymentHistoryManager({
                       )}
                       {esPendiente && (
                         <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-800 border border-orange-200">
-                          <Clock className="w-3 h-3 mr-1" />{" "}
-                          {translateDomainStatus(t, "pending")}
+                          <Clock className="w-3 h-3 mr-1" /> {translateDomainStatus(t, "pending")}
                         </span>
                       )}
                       {esAnulada && (

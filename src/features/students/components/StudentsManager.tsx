@@ -23,11 +23,7 @@ import {
 import { nextPrefixedId } from "../../../domain/ids";
 import { formatDniNumbers } from "../../../domain/tax-id";
 import { translateDomainStatus } from "../../../core/i18n/legacyUi";
-import {
-  guardianDisplayName,
-  type Student,
-  type StudentStatus,
-} from "../../../domain/student";
+import { guardianDisplayName, type Student, type StudentStatus } from "../../../domain/student";
 import { useStudentsStore } from "../hooks/useStudentsStore";
 import { StudentImportModal } from "./StudentImportModal";
 
@@ -54,7 +50,8 @@ type StudentFormState = {
   notes: string;
 };
 
-type StudentSortKey = "studentId" | "guardianFirstName" | "guardianLastName" | "studentName" | "enrolledAt";
+type StudentSortKey =
+  "studentId" | "guardianFirstName" | "guardianLastName" | "studentName" | "enrolledAt";
 type StudentHistoryModal = Student & { historial: StudentCourseHistoryEntry[] };
 
 type StudentsManagerProps = {
@@ -97,18 +94,14 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
   const { confirm } = useConfirm();
   const { toast } = useToast();
 
-  const {
-    students,
-    setStudents,
-    enrollments,
-    classGroups,
-    courses,
-    taxIdSeparator,
-  } = useStudentsStore();
+  const { students, setStudents, enrollments, classGroups, courses, taxIdSeparator } =
+    useStudentsStore();
   const [showForm, setShowForm] = useState(openNewForm);
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  const [selectedStudentHistory, setSelectedStudentHistory] = useState<StudentHistoryModal | null>(null);
+  const [selectedStudentHistory, setSelectedStudentHistory] = useState<StudentHistoryModal | null>(
+    null,
+  );
   const [detailStudentId, setDetailStudentId] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
@@ -161,7 +154,7 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
   };
 
   const handlePostalCode = (e: ChangeEvent<HTMLInputElement>) => {
-    let postalCode = e.target.value.replace(/\D/g, "").slice(0, 5);
+    const postalCode = e.target.value.replace(/\D/g, "").slice(0, 5);
     let city = formState.city;
     if (postalCode.length >= 2) {
       const prefix = postalCode.substring(0, 2);
@@ -194,7 +187,8 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
       `${formState.streetType} ${formState.streetName}` +
       (formState.streetNumber ? `, n.º ${formState.streetNumber}` : "");
     let formattedUnit = "";
-    if (formState.unitNumber) formattedUnit += `${formState.unitAbbreviation} ${formState.unitNumber} `;
+    if (formState.unitNumber)
+      formattedUnit += `${formState.unitAbbreviation} ${formState.unitNumber} `;
     if (formState.floorNumber) formattedUnit += `Apt. ${formState.floorNumber} `;
     if (formState.floorLetter) formattedUnit += `${formState.floorLetter}`;
 
@@ -276,7 +270,7 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
 
   const handleEdit = () => {
     const targetId =
-      selectedIds.length === 1 ? selectedIds[0] : detailStudentId ?? selectedIds[0];
+      selectedIds.length === 1 ? selectedIds[0] : (detailStudentId ?? selectedIds[0]);
     if (!targetId) return;
     openEdit(targetId);
   };
@@ -486,7 +480,10 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
       setDetailStudentId(null);
       return;
     }
-    if (!detailStudentId || !visibleStudents.some((student) => student.studentId === detailStudentId)) {
+    if (
+      !detailStudentId ||
+      !visibleStudents.some((student) => student.studentId === detailStudentId)
+    ) {
       setDetailStudentId(visibleStudents[0].studentId);
     }
   }, [visibleStudents, detailStudentId]);
@@ -497,7 +494,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
 
   const DetailField = ({ label, value }: { label: string; value?: ReactNode }) => (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">{label}</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">
+        {label}
+      </p>
       <p className="mt-1 text-sm text-[var(--color-text)] break-words">{value || "-"}</p>
     </div>
   );
@@ -506,7 +505,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
     <div className="bg-[var(--color-surface-elevated)] w-full p-6 md:p-8 rounded-xl shadow-sm border border-[var(--color-border)] flex flex-col min-h-[85vh]">
       <div className="flex justify-between items-center mb-6 shrink-0">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--color-text)] mb-1">{t("students.title")}</h1>
+          <h1 className="text-2xl font-bold text-[var(--color-text)] mb-1">
+            {t("students.title")}
+          </h1>
           <p className="text-sm text-[var(--color-text-muted)]">{t("students.subtitle")}</p>
         </div>
         {!showForm && (
@@ -537,12 +538,16 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
         <div className="mb-6 p-6 bg-[var(--color-info-surface)]/50 border border-[var(--color-border)] rounded-lg shadow-inner shrink-0">
           <h3 className="font-bold text-[var(--color-primary)] mb-4 flex items-center">
             {editingId ? <Edit className="w-5 h-5 mr-2" /> : <UserPlus className="w-5 h-5 mr-2" />}
-            {editingId ? t("students.editingClient", { id: editingId }) : t("students.newClientForm")}
+            {editingId
+              ? t("students.editingClient", { id: editingId })
+              : t("students.newClientForm")}
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4 text-sm">
             <div className="flex flex-col">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.code")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.code")}
+              </label>
               <input
                 type="text"
                 value={editingId || nextStudentId()}
@@ -552,7 +557,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.taxId")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.taxId")}
+              </label>
               <div className="flex gap-1">
                 <input
                   type="text"
@@ -573,7 +580,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.firstName")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.firstName")}
+              </label>
               <input
                 type="text"
                 name="guardianFirstName"
@@ -584,7 +593,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-2">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.lastName")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.lastName")}
+              </label>
               <input
                 type="text"
                 name="guardianLastName"
@@ -595,7 +606,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.streetType")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.streetType")}
+              </label>
               <select
                 name="streetType"
                 value={formState.streetType}
@@ -612,7 +625,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-3">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.streetName")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.streetName")}
+              </label>
               <input
                 type="text"
                 name="streetName"
@@ -624,7 +639,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.number")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.number")}
+              </label>
               <div className="flex">
                 <span className="bg-[var(--color-surface-muted)] border border-r-0 border-[var(--color-border)] rounded-l p-2 text-[var(--color-text-muted)] font-semibold select-none">
                   {t("students.prefixes.number")}
@@ -640,7 +657,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.portal")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.portal")}
+              </label>
               <div className="flex">
                 <select
                   name="unitAbbreviation"
@@ -664,7 +683,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.floor")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.floor")}
+              </label>
               <div className="flex">
                 <span className="bg-[var(--color-surface-muted)] border border-r-0 border-[var(--color-border)] rounded-l p-2 text-[var(--color-text-muted)] font-semibold select-none">
                   {t("students.prefixes.apartment")}
@@ -689,7 +710,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.zip")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.zip")}
+              </label>
               <input
                 type="text"
                 name="postalCode"
@@ -701,7 +724,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-2">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.city")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.city")}
+              </label>
               <input
                 type="text"
                 name="city"
@@ -712,7 +737,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-2">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.email")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.email")}
+              </label>
               <input
                 type="email"
                 name="email"
@@ -723,7 +750,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.phone")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.phone")}
+              </label>
               <input
                 type="text"
                 name="phone"
@@ -735,7 +764,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-2">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.studentName")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.studentName")}
+              </label>
               <input
                 type="text"
                 name="studentName"
@@ -746,7 +777,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.age")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.age")}
+              </label>
               <input
                 type="number"
                 name="age"
@@ -758,7 +791,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.enrollmentDate")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.enrollmentDate")}
+              </label>
               <input
                 type="date"
                 name="enrolledAt"
@@ -769,7 +804,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.status")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.status")}
+              </label>
               <select
                 name="status"
                 value={formState.status}
@@ -782,7 +819,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="flex flex-col md:col-span-5 mt-2">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("students.notes")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("students.notes")}
+              </label>
               <textarea
                 name="notes"
                 value={formState.notes}
@@ -850,7 +889,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </button>
             {showFilters && (
               <div className="absolute right-0 mt-2 w-64 bg-[var(--color-surface-elevated)] border border-[var(--color-border)] shadow-xl rounded-lg p-4 z-20">
-                <h4 className="font-bold text-[var(--color-text)] mb-3">{t("students.filters.title")}</h4>
+                <h4 className="font-bold text-[var(--color-text)] mb-3">
+                  {t("students.filters.title")}
+                </h4>
                 <div className="mb-3">
                   <label className="block text-xs font-semibold text-[var(--color-text-muted)] mb-1">
                     {t("students.filters.status")}
@@ -917,13 +958,15 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
                   onClick={exportCsv}
                   className="w-full text-left px-4 py-2 hover:bg-[var(--color-surface)] text-sm font-semibold text-[var(--color-text)] flex items-center"
                 >
-                  <TableIcon className="w-4 h-4 mr-2 text-[var(--color-success)]" /> {t("students.exportCsv")}
+                  <TableIcon className="w-4 h-4 mr-2 text-[var(--color-success)]" />{" "}
+                  {t("students.exportCsv")}
                 </button>
                 <button
                   onClick={exportPdf}
                   className="w-full text-left px-4 py-2 hover:bg-[var(--color-surface)] text-sm font-semibold text-[var(--color-text)] flex items-center"
                 >
-                  <FileText className="w-4 h-4 mr-2 text-[var(--color-danger)]" /> {t("students.exportPdf")}
+                  <FileText className="w-4 h-4 mr-2 text-[var(--color-danger)]" />{" "}
+                  {t("students.exportPdf")}
                 </button>
               </div>
             )}
@@ -963,7 +1006,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
 
           <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
             {visibleStudents.length === 0 ? (
-              <p className="px-4 py-8 text-center text-sm text-[var(--color-text-muted)]">{t("students.empty")}</p>
+              <p className="px-4 py-8 text-center text-sm text-[var(--color-text-muted)]">
+                {t("students.empty")}
+              </p>
             ) : (
               visibleStudents.map((student) => {
                 const isActive = detailStudentId === student.studentId;
@@ -972,7 +1017,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
                   <div
                     key={student.studentId}
                     className={`flex items-start gap-2 px-3 py-3 transition-colors ${
-                      isActive ? "bg-[var(--color-info-surface)]" : "hover:bg-[var(--color-surface)]"
+                      isActive
+                        ? "bg-[var(--color-info-surface)]"
+                        : "hover:bg-[var(--color-surface)]"
                     } ${isInactive ? "opacity-70" : ""}`}
                   >
                     <input
@@ -1021,7 +1068,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
               <div className="border-b border-[var(--color-border)] bg-[var(--color-surface)] px-5 py-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
-                    <p className="text-xs font-bold text-[var(--color-text-muted)]">{detailStudent.studentId}</p>
+                    <p className="text-xs font-bold text-[var(--color-text-muted)]">
+                      {detailStudent.studentId}
+                    </p>
                     <h2 className="mt-1 text-xl font-bold text-[var(--color-text)]">
                       {guardianDisplayName(detailStudent)}
                     </h2>
@@ -1034,7 +1083,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
                         {detailStudent.studentName}
                       </button>
                     ) : (
-                      <p className="mt-1 text-sm text-[var(--color-text-muted)]">{t("students.detail.noStudent")}</p>
+                      <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+                        {t("students.detail.noStudent")}
+                      </p>
                     )}
                   </div>
                   <span
@@ -1078,7 +1129,10 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
                     {t("students.detail.address")}
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <DetailField label={t("students.table.address")} value={detailStudent.formattedAddress} />
+                    <DetailField
+                      label={t("students.table.address")}
+                      value={detailStudent.formattedAddress}
+                    />
                     <DetailField
                       label={t("students.table.floorDetails")}
                       value={detailStudent.formattedUnit}
@@ -1134,8 +1188,12 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
           <div className="bg-[var(--color-surface-elevated)] w-full max-w-lg rounded-xl shadow-2xl overflow-hidden flex flex-col">
             <div className="p-6 bg-[var(--color-primary)] text-[var(--color-on-primary)] flex justify-between items-center">
               <div>
-                <h2 className="text-xl font-bold flex items-center">{t("students.history.title")}</h2>
-                <p className="text-[var(--color-on-primary)]/80 text-sm opacity-90">{t("students.history.subtitle")}</p>
+                <h2 className="text-xl font-bold flex items-center">
+                  {t("students.history.title")}
+                </h2>
+                <p className="text-[var(--color-on-primary)]/80 text-sm opacity-90">
+                  {t("students.history.subtitle")}
+                </p>
               </div>
               <button
                 onClick={() => setSelectedStudentHistory(null)}
@@ -1151,7 +1209,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
                   <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-1">
                     {t("students.history.name")}
                   </p>
-                  <p className="font-semibold text-[var(--color-text)] text-lg">{selectedStudentHistory.studentName}</p>
+                  <p className="font-semibold text-[var(--color-text)] text-lg">
+                    {selectedStudentHistory.studentName}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-1">
@@ -1167,7 +1227,9 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
             </div>
 
             <div className="p-6">
-              <h3 className="font-bold text-[var(--color-text)] mb-4">{t("students.history.coursesTitle")}</h3>
+              <h3 className="font-bold text-[var(--color-text)] mb-4">
+                {t("students.history.coursesTitle")}
+              </h3>
               <div className="border border-[var(--color-border)] rounded-lg overflow-hidden">
                 <table className="w-full text-left text-sm">
                   <thead className="bg-[var(--color-surface-muted)] border-b border-[var(--color-border)]">
@@ -1183,7 +1245,10 @@ export function StudentsManager({ openNewForm = false }: StudentsManagerProps) {
                   <tbody className="divide-y divide-gray-100">
                     {selectedStudentHistory.historial.length === 0 ? (
                       <tr>
-                        <td colSpan={2} className="px-4 py-6 text-center text-[var(--color-text-muted)] italic">
+                        <td
+                          colSpan={2}
+                          className="px-4 py-6 text-center text-[var(--color-text-muted)] italic"
+                        >
                           {t("students.history.noEnrollments")}
                         </td>
                       </tr>

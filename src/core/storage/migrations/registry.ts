@@ -10,9 +10,7 @@ export const SCHEMA_MIGRATIONS: readonly SchemaMigration[] = [
   { version: 3, description: "payment_record_group_ids" },
 ] as const;
 
-export const SCHEMA_MIGRATION_VERSIONS = SCHEMA_MIGRATIONS.map(
-  (migration) => migration.version,
-);
+export const SCHEMA_MIGRATION_VERSIONS = SCHEMA_MIGRATIONS.map((migration) => migration.version);
 
 export function getMigration(version: number): SchemaMigration | undefined {
   return SCHEMA_MIGRATIONS.find((migration) => migration.version === version);

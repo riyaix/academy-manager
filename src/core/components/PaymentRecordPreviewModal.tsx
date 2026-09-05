@@ -96,7 +96,9 @@ export function PaymentRecordPreviewModal({
           className="h-[70vh] w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]"
         />
       ) : (
-        <p className="text-sm text-[var(--color-text-muted)]">{t("paymentHistory.previewLoading")}</p>
+        <p className="text-sm text-[var(--color-text-muted)]">
+          {t("paymentHistory.previewLoading")}
+        </p>
       )}
     </Modal>
   );

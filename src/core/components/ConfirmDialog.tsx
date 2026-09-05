@@ -78,7 +78,9 @@ export function ConfirmDialogProvider({ children }: { children: ReactNode }) {
           ) : undefined
         }
       >
-        {request && <p className="text-sm sm:text-base text-[var(--color-text-muted)]">{request.message}</p>}
+        {request && (
+          <p className="text-sm sm:text-base text-[var(--color-text-muted)]">{request.message}</p>
+        )}
       </Modal>
     </ConfirmContext.Provider>
   );

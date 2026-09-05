@@ -8,10 +8,10 @@ describe("withTransaction", () => {
     const db = createNodeSqliteAdapter(sync);
 
     await withTransaction(db, async (tx) => {
-      await tx.execute(
-        `INSERT INTO settings_sections (section_key, data_json) VALUES ($1, $2)`,
-        ["branding", '{"appName":"Ok"}'],
-      );
+      await tx.execute(`INSERT INTO settings_sections (section_key, data_json) VALUES ($1, $2)`, [
+        "branding",
+        '{"appName":"Ok"}',
+      ]);
     });
 
     const rows = await db.select<Array<{ section_key: string }>>(
@@ -26,10 +26,10 @@ describe("withTransaction", () => {
 
     await expect(
       withTransaction(db, async (tx) => {
-        await tx.execute(
-          `INSERT INTO settings_sections (section_key, data_json) VALUES ($1, $2)`,
-          ["branding", '{"appName":"Temp"}'],
-        );
+        await tx.execute(`INSERT INTO settings_sections (section_key, data_json) VALUES ($1, $2)`, [
+          "branding",
+          '{"appName":"Temp"}',
+        ]);
         throw new Error("stop");
       }),
     ).rejects.toThrow("stop");

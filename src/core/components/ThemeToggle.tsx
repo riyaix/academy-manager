@@ -1,10 +1,7 @@
 import { Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAppStore } from "../../app/store/appStore";
-import {
-  normalizeColorScheme,
-  resolveEffectiveScheme,
-} from "../theme/colorScheme";
+import { normalizeColorScheme, resolveEffectiveScheme } from "../theme/colorScheme";
 
 /** Sidebar control: toggles between light and dark (sets an explicit preference). */
 export function ThemeToggle() {

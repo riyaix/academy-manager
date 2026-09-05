@@ -32,9 +32,7 @@ export function buildBatchPaymentRecords(input: {
     if (enrollment.status !== "active" || !selectedGroups.has(enrollment.classGroupId)) continue;
 
     const group = classGroups.find((item) => item.classGroupId === enrollment.classGroupId);
-    const course = group
-      ? courses.find((item) => item.courseId === group.courseId)
-      : undefined;
+    const course = group ? courses.find((item) => item.courseId === group.courseId) : undefined;
     const student = students.find((item) => item.studentId === enrollment.studentId);
     if (!group || !course || !student) continue;
 

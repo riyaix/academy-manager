@@ -2,8 +2,7 @@
 export const FONT_FAMILY_VAR = "--font-family-sans";
 
 /** Bundled Atkinson Hyperlegible — used for all UI text. */
-export const APP_FONT_FAMILY =
-  '"Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif';
+export const APP_FONT_FAMILY = '"Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif';
 
 export type FontSizePreference = "small" | "normal" | "large" | "x-large";
 

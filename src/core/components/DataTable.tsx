@@ -42,7 +42,8 @@ type SortableThProps = ThHTMLAttributes<HTMLTableCellElement> & {
 };
 
 function SortableTh({ children, direction, onToggle, className, ...props }: SortableThProps) {
-  const Icon = direction === "asc" ? ChevronUp : direction === "desc" ? ChevronDown : ChevronsUpDown;
+  const Icon =
+    direction === "asc" ? ChevronUp : direction === "desc" ? ChevronDown : ChevronsUpDown;
   return (
     <th
       scope="col"
@@ -126,11 +127,7 @@ export function DataTable<T>({
                   {col.header}
                 </SortableTh>
               ) : (
-                <th
-                  key={col.id}
-                  scope="col"
-                  className={cn(cellPadding, col.className)}
-                >
+                <th key={col.id} scope="col" className={cn(cellPadding, col.className)}>
                   {col.header}
                 </th>
               ),
@@ -140,7 +137,10 @@ export function DataTable<T>({
         <tbody className="divide-y divide-[var(--color-border)]">
           {sortedData.length === 0 && emptyState ? (
             <tr>
-              <td colSpan={columns.length} className="p-8 text-center text-[var(--color-text-muted)]">
+              <td
+                colSpan={columns.length}
+                className="p-8 text-center text-[var(--color-text-muted)]"
+              >
                 {emptyState}
               </td>
             </tr>

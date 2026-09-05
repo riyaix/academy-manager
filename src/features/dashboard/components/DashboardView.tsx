@@ -71,10 +71,7 @@ export function DashboardView() {
   const alertas = useMemo(() => {
     const dSemana = legacyWeekdayFromDate(new Date());
     const clasesHoy = classGroups
-      .filter(
-        (group) =>
-          group.status !== "archived" && (group.weekdays || []).includes(dSemana),
-      )
+      .filter((group) => group.status !== "archived" && (group.weekdays || []).includes(dSemana))
       .sort((left, right) => (left.startTime || "").localeCompare(right.startTime || ""));
     const facturasPendientes = paymentRecords.filter((record) => record.status === "pending");
     return { clasesHoy, facturasPendientes, hoyStr: dSemana };
@@ -182,7 +179,9 @@ export function DashboardView() {
             {t("dashboard.kpiOccupancy")}
           </p>
           <div className="flex items-center gap-3">
-            <p className="text-3xl font-black text-[var(--color-text)] mb-0">{kpis.porcentajeOcupacion}%</p>
+            <p className="text-3xl font-black text-[var(--color-text)] mb-0">
+              {kpis.porcentajeOcupacion}%
+            </p>
             <div className="flex-1 h-2 bg-[var(--color-surface-muted)] rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full ${kpis.porcentajeOcupacion > 85 ? "bg-[var(--color-warning)]" : "bg-[var(--color-primary)]"}`}
@@ -236,7 +235,9 @@ export function DashboardView() {
                         aria-hidden
                       />
                       <div className="min-w-0">
-                        <p className="font-bold text-[var(--color-text)] text-sm truncate">{grupo.name}</p>
+                        <p className="font-bold text-[var(--color-text)] text-sm truncate">
+                          {grupo.name}
+                        </p>
                         <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
                           {grupo.startTime} - {grupo.endTime}
                         </p>
@@ -300,14 +301,22 @@ export function DashboardView() {
               </div>
             ) : (
               <div className="bg-[var(--color-success-surface)] border border-[var(--color-border)] p-4 rounded-xl flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-[var(--color-success)] shrink-0" aria-hidden />
-                <p className="font-bold text-[var(--color-success)] text-sm mb-0">{t("dashboard.allPaid")}</p>
+                <CheckCircle2
+                  className="w-5 h-5 text-[var(--color-success)] shrink-0"
+                  aria-hidden
+                />
+                <p className="font-bold text-[var(--color-success)] text-sm mb-0">
+                  {t("dashboard.allPaid")}
+                </p>
               </div>
             )}
 
             {kpis.gruposLlenos > 0 ? (
               <div className="bg-[var(--color-info-surface)] border border-[var(--color-border)] p-3 rounded-xl flex items-start gap-3">
-                <Users className="w-5 h-5 text-[var(--color-primary)] shrink-0 mt-0.5" aria-hidden />
+                <Users
+                  className="w-5 h-5 text-[var(--color-primary)] shrink-0 mt-0.5"
+                  aria-hidden
+                />
                 <div>
                   <p className="font-bold text-[var(--color-text)] text-sm mb-0">
                     {t("dashboard.capacityFullTitle")}

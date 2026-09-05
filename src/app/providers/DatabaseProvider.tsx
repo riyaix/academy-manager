@@ -97,7 +97,9 @@ export function DatabaseProvider({ children }: DatabaseProviderProps) {
           </div>
           <p className="text-sm text-(--color-text-muted)">{t("storage.initErrorBody")}</p>
           {migrationMismatch ? (
-            <p className="mt-3 text-sm text-(--color-text-muted)">{t("storage.initErrorMigrationHint")}</p>
+            <p className="mt-3 text-sm text-(--color-text-muted)">
+              {t("storage.initErrorMigrationHint")}
+            </p>
           ) : null}
           <p className="mt-3 rounded-md bg-(--color-surface) p-3 text-xs text-(--color-text)">
             {initState.message}

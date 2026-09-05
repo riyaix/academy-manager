@@ -9,7 +9,8 @@ import { fromMoney, toMoney } from "./money";
 import type { PaymentRecord } from "./payment-record";
 
 function record(
-  overrides: Partial<PaymentRecord> & Pick<PaymentRecord, "recordId" | "issuedOn" | "total" | "status">,
+  overrides: Partial<PaymentRecord> &
+    Pick<PaymentRecord, "recordId" | "issuedOn" | "total" | "status">,
 ): PaymentRecord {
   return {
     studentId: "C001",

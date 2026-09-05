@@ -177,14 +177,17 @@ export function classGroupToRow(group: ClassGroup): ClassGroupRow {
   };
 }
 
-export function rowToClassGroup(row: ClassGroupRow): ClassGroup {
-  let weekdays: LegacyWeekday[] = [];
+function parseWeekdaysJson(raw: string): LegacyWeekday[] {
   try {
-    const parsed = JSON.parse(row.weekdays_json) as LegacyWeekday[];
-    weekdays = Array.isArray(parsed) ? parsed : [];
+    const parsed = JSON.parse(raw) as LegacyWeekday[];
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
-    weekdays = [];
+    return [];
   }
+}
+
+export function rowToClassGroup(row: ClassGroupRow): ClassGroup {
+  const weekdays = parseWeekdaysJson(row.weekdays_json);
 
   return {
     classGroupId: row.class_group_id,

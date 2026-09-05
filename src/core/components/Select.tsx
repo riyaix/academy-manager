@@ -48,9 +48,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-1",
             "disabled:opacity-50 disabled:cursor-not-allowed",
             "pr-10 cursor-pointer",
-            error
-              ? "border-[var(--color-danger)]"
-              : "border-[var(--color-border)]",
+            error ? "border-[var(--color-danger)]" : "border-[var(--color-border)]",
             leftIcon ? "pl-10" : "",
             sizeClasses[size],
             className,

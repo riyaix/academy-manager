@@ -9,11 +9,7 @@ type KeyboardShortcutsModalProps = {
   shortcuts: KeyboardShortcut[];
 };
 
-export function KeyboardShortcutsModal({
-  open,
-  onClose,
-  shortcuts,
-}: KeyboardShortcutsModalProps) {
+export function KeyboardShortcutsModal({ open, onClose, shortcuts }: KeyboardShortcutsModalProps) {
   const { t } = useTranslation();
 
   return (

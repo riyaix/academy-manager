@@ -129,7 +129,7 @@ function parseStatus(value: string): StudentStatus {
 }
 
 function normalizeTaxId(value: string): string {
-  return value.replace(/[\s.\-]/g, "").toUpperCase();
+  return value.replace(/[\s.-]/g, "").toUpperCase();
 }
 
 function normalizePersonName(value: string): string {
@@ -143,8 +143,7 @@ export function findExistingStudentMatch(
   const taxId = draft.guardianTaxId ? normalizeTaxId(draft.guardianTaxId) : "";
   if (taxId) {
     const byTax = existing.find(
-      (student) =>
-        student.guardianTaxId && normalizeTaxId(student.guardianTaxId) === taxId,
+      (student) => student.guardianTaxId && normalizeTaxId(student.guardianTaxId) === taxId,
     );
     if (byTax) return byTax;
   }

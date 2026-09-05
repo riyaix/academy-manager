@@ -78,8 +78,6 @@ describe("searchAppEntities", () => {
   });
 
   it("returns empty for blank queries", () => {
-    expect(
-      searchAppEntities("  ", { students, paymentRecords, courses, classGroups }),
-    ).toEqual([]);
+    expect(searchAppEntities("  ", { students, paymentRecords, courses, classGroups })).toEqual([]);
   });
 });

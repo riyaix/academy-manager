@@ -40,12 +40,12 @@
    * Hues are spaced ≥40° apart and vary in lightness to remain distinguishable
    * under deuteranopia and protanopia simulations.
    */
-  --color-group-1: oklch(0.48 0.1 185);   /* teal */
-  --color-group-2: oklch(0.52 0.1 120);   /* yellow-green (shifted from 155 for deuteranopia) */
-  --color-group-3: oklch(0.52 0.11 70);   /* amber */
-  --color-group-4: oklch(0.5 0.12 25);    /* red-orange */
-  --color-group-5: oklch(0.48 0.09 300);  /* purple */
-  --color-group-6: oklch(0.44 0.09 250);  /* indigo (lower lightness to differentiate from purple) */
+  --color-group-1: oklch(0.48 0.1 185); /* teal */
+  --color-group-2: oklch(0.52 0.1 120); /* yellow-green (shifted from 155 for deuteranopia) */
+  --color-group-3: oklch(0.52 0.11 70); /* amber */
+  --color-group-4: oklch(0.5 0.12 25); /* red-orange */
+  --color-group-5: oklch(0.48 0.09 300); /* purple */
+  --color-group-6: oklch(0.44 0.09 250); /* indigo (lower lightness to differentiate from purple) */
   --color-on-group: oklch(0.99 0.01 100);
 
   /* Line-height tokens */
@@ -148,7 +148,9 @@
 
   select:not([data-ui-select]):focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px var(--color-surface-elevated), 0 0 0 4px var(--color-primary);
+    box-shadow:
+      0 0 0 2px var(--color-surface-elevated),
+      0 0 0 4px var(--color-primary);
   }
 
   h1 {
@@ -185,18 +187,34 @@
 /* ── Transition keyframes for modals, toasts, overlays ──────────────── */
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slide-in-right {
-  from { opacity: 0; transform: translateX(24px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

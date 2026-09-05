@@ -13,14 +13,8 @@ import {
 
 import { useCalendarStore } from "../hooks/useCalendarStore";
 import { legacyWeekdays, translateWeekday } from "../../../core/i18n/legacyUi";
-import {
-  isHexColor,
-  resolveGroupColorClass,
-} from "../../../core/theme/groupColors";
-import {
-  formatFriendlyLongDate,
-  isSameCalendarDay,
-} from "../formatCalendarDate";
+import { isHexColor, resolveGroupColorClass } from "../../../core/theme/groupColors";
+import { formatFriendlyLongDate, isSameCalendarDay } from "../formatCalendarDate";
 
 type CalendarViewMode = "diaria" | "semanal" | "mensual";
 type CalendarShift = "mañana" | "tarde";
@@ -41,15 +35,15 @@ export function CalendarView({ initialView = "semanal" }: CalendarViewProps) {
 
   const diasSemana = legacyWeekdays(t);
 
-  const horasMañana = Array.from(
+  const morningHours = Array.from(
     { length: 11 },
     (_, i) => `${Math.floor(i / 2) + 9}`.padStart(2, "0") + (i % 2 === 0 ? ":00" : ":30"),
   );
-  const horasTarde = Array.from(
+  const afternoonHours = Array.from(
     { length: 11 },
     (_, i) => `${Math.floor(i / 2) + 16}`.padStart(2, "0") + (i % 2 === 0 ? ":00" : ":30"),
   );
-  const horasActuales = turno === "mañana" ? horasMañana : horasTarde;
+  const horasActuales = turno === "mañana" ? morningHours : afternoonHours;
 
   const obtenerLunes = (d: Date) => {
     const date = new Date(d);
@@ -360,7 +354,10 @@ export function CalendarView({ initialView = "semanal" }: CalendarViewProps) {
                                 height: `calc(${pos.height} - 8px)`,
                                 ...(isHex ? { backgroundColor: grupo.colorClass } : {}),
                               }}
-                              title={t("calendar.groupTooltip", { name: grupo.name, count: numKids })}
+                              title={t("calendar.groupTooltip", {
+                                name: grupo.name,
+                                count: numKids,
+                              })}
                             >
                               <div>
                                 <p className="font-extrabold text-sm drop-shadow-md truncate leading-tight">
@@ -384,7 +381,9 @@ export function CalendarView({ initialView = "semanal" }: CalendarViewProps) {
                     </div>
                   );
                 })}
-                {vistaCalendario === "diaria" && <div className="bg-[var(--color-surface)]/30"></div>}
+                {vistaCalendario === "diaria" && (
+                  <div className="bg-[var(--color-surface)]/30"></div>
+                )}
               </div>
             </div>
           </>

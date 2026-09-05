@@ -23,7 +23,7 @@ const LEGACY_SHELL_PATHS = [
 
 export default tseslint.config(
   {
-    ignores: ["dist/**", "src-tauri/target/**", "node_modules/**"],
+    ignores: ["dist/**", "src-tauri/target/**", "node_modules/**", "src/features/**/archived/**"],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -50,10 +50,14 @@ export default tseslint.config(
         },
       ],
       "@typescript-eslint/no-explicit-any": "warn",
+      "react-hooks/preserve-manual-memoization": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/static-components": "off",
+      "react-hooks/purity": "off",
     },
   },
   {
-    files: ["vite.config.ts"],
+    files: ["vite.config.ts", "scripts/**/*.mjs"],
     languageOptions: {
       globals: globals.node,
     },

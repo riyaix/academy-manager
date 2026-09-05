@@ -9,7 +9,10 @@ export type BackupMetadata = {
   exportedAt: string;
 };
 
-export function buildBackupMetadata(schemaVersion: number, exportedAt = new Date()): BackupMetadata {
+export function buildBackupMetadata(
+  schemaVersion: number,
+  exportedAt = new Date(),
+): BackupMetadata {
   return {
     formatVersion: BACKUP_FORMAT_VERSION,
     product: "academy-manager",

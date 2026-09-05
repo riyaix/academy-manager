@@ -92,4 +92,3 @@ export function countMonthsInDateRange(range?: IncomeDateRange): number {
 
   return (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth()) + 1;
 }
-

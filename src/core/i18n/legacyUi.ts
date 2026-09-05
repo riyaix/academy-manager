@@ -4,7 +4,11 @@ import type { PaymentRecordStatus } from "../../domain/payment-record";
 import type { ActiveStatus } from "../../domain/shared";
 import type { ClassGroupStatus } from "../../domain/group";
 import type { EnrollmentStatus } from "../../domain/enrollment";
-import { LEGACY_WEEKDAYS, WEEKDAY_I18N_KEY, WEEKDAY_SHORT_I18N_KEY } from "../../domain/legacy-weekdays";
+import {
+  LEGACY_WEEKDAYS,
+  WEEKDAY_I18N_KEY,
+  WEEKDAY_SHORT_I18N_KEY,
+} from "../../domain/legacy-weekdays";
 
 export function translateWeekday(t: TFunction, legacy: LegacyWeekday): string {
   return t(WEEKDAY_I18N_KEY[legacy]);

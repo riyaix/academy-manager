@@ -83,7 +83,7 @@ export function allocatePaymentRecordIds(
   }
 
   const storedForYear = storedCounters[String(year)] ?? 0;
-  let nextSequence = Math.max(maxFromRecords, storedForYear) + 1;
+  const nextSequence = Math.max(maxFromRecords, storedForYear) + 1;
 
   const ids: string[] = [];
   for (let index = 0; index < count; index++) {

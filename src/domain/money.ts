@@ -28,11 +28,7 @@ export function multiplyMoney(value: Money, quantity: number): Money {
   return Math.round(Number(value) * quantity) as Money;
 }
 
-export function formatMoney(
-  value: Money,
-  locale: string,
-  currency: string = "EUR",
-): string {
+export function formatMoney(value: Money, locale: string, currency: string = "EUR"): string {
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,

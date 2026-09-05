@@ -51,7 +51,9 @@ export function IncomeTaxReserveHint({
             currency: currencySymbol,
           })}
         </p>
-        <p className="text-xs text-(--color-warning) mt-1">{t("dashboard.incomeTaxReserve.hint")}</p>
+        <p className="text-xs text-(--color-warning) mt-1">
+          {t("dashboard.incomeTaxReserve.hint")}
+        </p>
       </div>
     </div>
   );

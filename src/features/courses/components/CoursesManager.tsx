@@ -183,12 +183,7 @@ export function CoursesManager() {
 
   // --- LÓGICA DEL MODAL DE DETALLES DEL CURSO ---
   const abrirDetallesCurso = (curso: Course) => {
-    const roster = buildCourseStudentRoster(
-      curso.courseId,
-      enrollments,
-      classGroups,
-      clientes,
-    );
+    const roster = buildCourseStudentRoster(curso.courseId, enrollments, classGroups, clientes);
 
     setCursoSeleccionado({
       ...curso,
@@ -238,14 +233,16 @@ export function CoursesManager() {
       doc.setTextColor(107, 114, 128);
       doc.text(t("courses.export.generatedOn", { date: new Date().toLocaleDateString() }), 14, 28);
 
-      const encabezados = [[
-        t("courses.export.pdfHeaders.code"),
-        t("courses.export.pdfHeaders.status"),
-        t("courses.export.pdfHeaders.course"),
-        t("courses.export.pdfHeaders.type"),
-        t("courses.export.pdfHeaders.fee"),
-        t("courses.export.pdfHeaders.created"),
-      ]];
+      const encabezados = [
+        [
+          t("courses.export.pdfHeaders.code"),
+          t("courses.export.pdfHeaders.status"),
+          t("courses.export.pdfHeaders.course"),
+          t("courses.export.pdfHeaders.type"),
+          t("courses.export.pdfHeaders.fee"),
+          t("courses.export.pdfHeaders.created"),
+        ],
+      ];
       const filas = productosMostrar.map((course) => [
         course.courseId,
         translateStatus(course.status),
@@ -309,13 +306,14 @@ export function CoursesManager() {
       const b = busqueda.toLowerCase();
       filtrados = filtrados.filter(
         (course) =>
-          course.courseName.toLowerCase().includes(b) ||
-          course.courseId.toLowerCase().includes(b),
+          course.courseName.toLowerCase().includes(b) || course.courseId.toLowerCase().includes(b),
       );
     }
 
     if (sortConfig.key !== null) {
-      filtrados.sort((a, b) => compareByKey(a[sortConfig.key], b[sortConfig.key], sortConfig.direction));
+      filtrados.sort((a, b) =>
+        compareByKey(a[sortConfig.key], b[sortConfig.key], sortConfig.direction),
+      );
     }
     return filtrados;
   }, [productos, busqueda, sortConfig]);
@@ -333,7 +331,9 @@ export function CoursesManager() {
       className={`px-4 py-4 cursor-pointer hover:bg-[var(--color-surface-muted)] transition-colors group ${isRight ? "text-right" : "text-left"}`}
       onClick={() => solicitarOrden(sortKey)}
     >
-      <div className={`flex items-center gap-1 text-[var(--color-text)] ${isRight ? "justify-end" : ""}`}>
+      <div
+        className={`flex items-center gap-1 text-[var(--color-text)] ${isRight ? "justify-end" : ""}`}
+      >
         {label}
         <ArrowUpDown
           className={`w-3 h-3 ${sortConfig.key === sortKey ? "text-[var(--color-primary)]" : "text-[var(--color-text-muted)] group-hover:text-[var(--color-text-muted)]"}`}
@@ -369,16 +369,16 @@ export function CoursesManager() {
         <div className="mb-6 p-6 bg-[var(--color-info-surface)] border border-[var(--color-border)] rounded-lg shadow-inner shrink-0">
           <h3 className="font-bold text-[var(--color-text)] mb-4 flex items-center">
             {editandoId ? <Edit className="w-5 h-5 mr-2" /> : <BookOpen className="w-5 h-5 mr-2" />}
-            {editandoId ? (
-              t("courses.editingCourse", { id: editandoId })
-            ) : (
-              t("courses.newCourseForm")
-            )}
+            {editandoId
+              ? t("courses.editingCourse", { id: editandoId })
+              : t("courses.newCourseForm")}
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-6 gap-4 text-sm">
             <div className="flex flex-col">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("courses.code")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("courses.code")}
+              </label>
               <input
                 type="text"
                 value={editandoId || obtenerSiguienteId()}
@@ -388,7 +388,9 @@ export function CoursesManager() {
             </div>
 
             <div className="flex flex-col md:col-span-2">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("courses.courseName")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("courses.courseName")}
+              </label>
               <input
                 type="text"
                 name="courseName"
@@ -400,7 +402,9 @@ export function CoursesManager() {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("courses.billingType")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("courses.billingType")}
+              </label>
               <select
                 name="billingType"
                 value={nuevoProducto.billingType}
@@ -414,7 +418,9 @@ export function CoursesManager() {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("courses.baseFee")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("courses.baseFee")}
+              </label>
               <input
                 type="number"
                 name="monthlyFee"
@@ -427,7 +433,9 @@ export function CoursesManager() {
             </div>
 
             <div className="flex flex-col md:col-span-1">
-              <label className="font-semibold text-[var(--color-text)] mb-1">{t("courses.status")}</label>
+              <label className="font-semibold text-[var(--color-text)] mb-1">
+                {t("courses.status")}
+              </label>
               <select
                 name="status"
                 value={nuevoProducto.status}
@@ -503,13 +511,15 @@ export function CoursesManager() {
                   onClick={exportarCSV}
                   className="w-full text-left px-4 py-2 hover:bg-[var(--color-surface)] text-sm font-semibold text-[var(--color-text)] flex items-center cursor-pointer"
                 >
-                  <TableIcon className="w-4 h-4 mr-2 text-[var(--color-success)]" /> {t("courses.exportCsv")}
+                  <TableIcon className="w-4 h-4 mr-2 text-[var(--color-success)]" />{" "}
+                  {t("courses.exportCsv")}
                 </button>
                 <button
                   onClick={exportarPDF}
                   className="w-full text-left px-4 py-2 hover:bg-[var(--color-surface)] text-sm font-semibold text-[var(--color-text)] flex items-center cursor-pointer"
                 >
-                  <FileText className="w-4 h-4 mr-2 text-[var(--color-danger)]" /> {t("courses.exportPdf")}
+                  <FileText className="w-4 h-4 mr-2 text-[var(--color-danger)]" />{" "}
+                  {t("courses.exportPdf")}
                 </button>
               </div>
             )}
@@ -537,7 +547,11 @@ export function CoursesManager() {
               <SortableHeader label={t("courses.table.course")} sortKey="courseName" />
               <SortableHeader label={t("courses.table.type")} sortKey="billingType" />
               <SortableHeader label={t("courses.table.created")} sortKey="createdAt" />
-              <SortableHeader label={t("courses.table.baseFee")} sortKey="monthlyFee" isRight={true} />
+              <SortableHeader
+                label={t("courses.table.baseFee")}
+                sortKey="monthlyFee"
+                isRight={true}
+              />
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--color-border)] bg-[var(--color-surface-elevated)]">
@@ -580,7 +594,9 @@ export function CoursesManager() {
                   <td className="px-4 py-3 text-[var(--color-text-muted)]">
                     {translateBillingType(prod.billingType)}
                   </td>
-                  <td className="px-4 py-3 text-[var(--color-text-muted)]">{prod.createdAt || "-"}</td>
+                  <td className="px-4 py-3 text-[var(--color-text-muted)]">
+                    {prod.createdAt || "-"}
+                  </td>
                   <td className="px-4 py-3 text-right font-bold text-[var(--color-text)]">
                     {fromMoney(prod.monthlyFee).toFixed(2)} €
                   </td>
@@ -598,7 +614,9 @@ export function CoursesManager() {
             {/* Cabecera Modal */}
             <div className="p-6 bg-[var(--color-primary)] text-[var(--color-on-primary)] flex justify-between items-center rounded-t-xl shrink-0">
               <div>
-                <h2 className="text-xl font-bold flex items-center">{cursoSeleccionado.courseName}</h2>
+                <h2 className="text-xl font-bold flex items-center">
+                  {cursoSeleccionado.courseName}
+                </h2>
                 <p className="text-[var(--color-on-primary)]/80 text-sm opacity-90 mt-1">
                   {t("courses.modal.subtitle")}
                 </p>
@@ -618,7 +636,9 @@ export function CoursesManager() {
                   <p className="text-xs font-bold text-[var(--color-text)] uppercase tracking-wider mb-1">
                     {t("courses.code")}
                   </p>
-                  <p className="font-semibold text-[var(--color-text)]">{cursoSeleccionado.courseId}</p>
+                  <p className="font-semibold text-[var(--color-text)]">
+                    {cursoSeleccionado.courseId}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs font-bold text-[var(--color-text)] uppercase tracking-wider mb-1">
@@ -681,7 +701,10 @@ export function CoursesManager() {
                     <tbody className="divide-y divide-gray-100 bg-[var(--color-surface-elevated)]">
                       {cursoSeleccionado.active.length === 0 ? (
                         <tr>
-                          <td colSpan={3} className="px-4 py-6 text-center text-[var(--color-text-muted)] italic">
+                          <td
+                            colSpan={3}
+                            className="px-4 py-6 text-center text-[var(--color-text-muted)] italic"
+                          >
                             {t("courses.modal.noActiveStudents")}
                           </td>
                         </tr>
@@ -713,7 +736,9 @@ export function CoursesManager() {
                     {t("courses.modal.historicStudents")}
                   </span>
                   <span className="bg-[var(--color-surface-muted)] text-[var(--color-text-muted)] text-xs px-2 py-1 rounded-full">
-                    {t("courses.modal.withdrawnCount", { count: cursoSeleccionado.historic.length })}
+                    {t("courses.modal.withdrawnCount", {
+                      count: cursoSeleccionado.historic.length,
+                    })}
                   </span>
                 </h3>
                 <div className="border border-[var(--color-border)] rounded-lg overflow-hidden">
@@ -740,7 +765,10 @@ export function CoursesManager() {
                     <tbody className="divide-y divide-gray-100 bg-[var(--color-surface-elevated)] opacity-80">
                       {cursoSeleccionado.historic.length === 0 ? (
                         <tr>
-                          <td colSpan={5} className="px-4 py-6 text-center text-[var(--color-text-muted)] italic">
+                          <td
+                            colSpan={5}
+                            className="px-4 py-6 text-center text-[var(--color-text-muted)] italic"
+                          >
                             {t("courses.modal.noHistoricRecords")}
                           </td>
                         </tr>
@@ -756,7 +784,9 @@ export function CoursesManager() {
                             <td className="px-4 py-2 text-[var(--color-text-muted)] text-center">
                               {alumno.age || "-"}
                             </td>
-                            <td className="px-4 py-2 text-[var(--color-text-muted)]">{alumno.lastClassDate}</td>
+                            <td className="px-4 py-2 text-[var(--color-text-muted)]">
+                              {alumno.lastClassDate}
+                            </td>
                             <td className="px-4 py-2 text-center">
                               <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[var(--color-danger-surface)] text-[var(--color-danger)]">
                                 {t("courses.statuses.withdrawn")}

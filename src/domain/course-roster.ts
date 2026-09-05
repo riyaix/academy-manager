@@ -58,9 +58,7 @@ export function buildCourseStudentRoster(
     const withdrawnEnrollment = [...studentEnrollments]
       .filter((item) => item.status !== "active")
       .sort((left, right) =>
-        (right.withdrawnAt ?? right.enrolledAt).localeCompare(
-          left.withdrawnAt ?? left.enrolledAt,
-        ),
+        (right.withdrawnAt ?? right.enrolledAt).localeCompare(left.withdrawnAt ?? left.enrolledAt),
       )[0];
 
     if (!withdrawnEnrollment) continue;

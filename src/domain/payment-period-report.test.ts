@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  buildPaymentPeriodReportCsv,
-  paymentRecordToReportRow,
-} from "./payment-period-report";
+import { buildPaymentPeriodReportCsv, paymentRecordToReportRow } from "./payment-period-report";
 import { toMoney } from "./money";
 import type { PaymentRecord } from "./payment-record";
 

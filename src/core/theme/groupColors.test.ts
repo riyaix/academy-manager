@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  GROUP_COLOR_PALETTE,
-  isHexColor,
-  resolveGroupColorClass,
-} from "./groupColors";
+import { GROUP_COLOR_PALETTE, isHexColor, resolveGroupColorClass } from "./groupColors";
 
 describe("groupColors", () => {
   it("maps legacy Tailwind classes to semantic tokens", () => {
@@ -13,9 +9,7 @@ describe("groupColors", () => {
   });
 
   it("repairs broken info-surface rewrite leftovers", () => {
-    expect(resolveGroupColorClass("bg-[var(--color-info-surface)]0")).toBe(
-      GROUP_COLOR_PALETTE[0],
-    );
+    expect(resolveGroupColorClass("bg-[var(--color-info-surface)]0")).toBe(GROUP_COLOR_PALETTE[0]);
   });
 
   it("keeps existing palette classes", () => {

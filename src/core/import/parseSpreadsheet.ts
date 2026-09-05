@@ -29,13 +29,16 @@ function tableFromMatrix(matrix: unknown[][]): SpreadsheetTable {
     return count === 0 ? header : `${header} (${count + 1})`;
   });
 
-  const rows = matrix.slice(1).map((line) => {
-    const row: Record<string, string> = {};
-    headers.forEach((header, index) => {
-      row[header] = normalizeCell(line[index]);
-    });
-    return row;
-  }).filter((row) => Object.values(row).some((value) => value.length > 0));
+  const rows = matrix
+    .slice(1)
+    .map((line) => {
+      const row: Record<string, string> = {};
+      headers.forEach((header, index) => {
+        row[header] = normalizeCell(line[index]);
+      });
+      return row;
+    })
+    .filter((row) => Object.values(row).some((value) => value.length > 0));
 
   return { headers, rows };
 }

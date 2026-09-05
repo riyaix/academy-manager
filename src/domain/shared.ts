@@ -7,20 +7,8 @@ export type EntityId = string;
 export type ActiveStatus = "active" | "inactive";
 
 export type Weekday =
-  | "monday"
-  | "tuesday"
-  | "wednesday"
-  | "thursday"
-  | "friday"
-  | "saturday"
-  | "sunday";
+  "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
 
 /** Spanish weekday labels used in the current UI and storage. */
 export type LegacyWeekday =
-  | "Lunes"
-  | "Martes"
-  | "Miércoles"
-  | "Jueves"
-  | "Viernes"
-  | "Sábado"
-  | "Domingo";
+  "Lunes" | "Martes" | "Miércoles" | "Jueves" | "Viernes" | "Sábado" | "Domingo";

@@ -241,7 +241,9 @@ export function createMockAppState(): PersistedAppState {
         issuedOn: "2026-03-01",
         studentId: "C003",
         payerName: "Carlos Ruiz Mendez",
-        lineItems: [{ description: "Matematicas ESO - Lucia Ruiz", quantity: 1, unitPrice: toMoney(38) }],
+        lineItems: [
+          { description: "Matematicas ESO - Lucia Ruiz", quantity: 1, unitPrice: toMoney(38) },
+        ],
         total: toMoney(38),
         status: "pending",
         billingPeriod: "Marzo 2026",
@@ -252,7 +254,9 @@ export function createMockAppState(): PersistedAppState {
         issuedOn: "2026-02-01",
         studentId: "C003",
         payerName: "Carlos Ruiz Mendez",
-        lineItems: [{ description: "Matematicas ESO - Lucia Ruiz", quantity: 1, unitPrice: toMoney(38) }],
+        lineItems: [
+          { description: "Matematicas ESO - Lucia Ruiz", quantity: 1, unitPrice: toMoney(38) },
+        ],
         total: toMoney(38),
         status: "paid",
         billingPeriod: "Febrero 2026",
@@ -264,7 +268,9 @@ export function createMockAppState(): PersistedAppState {
         issuedOn: "2026-03-05",
         studentId: "C004",
         payerName: "Elena Vega Soto",
-        lineItems: [{ description: "Robotica Junior - Hugo Vega", quantity: 1, unitPrice: toMoney(55) }],
+        lineItems: [
+          { description: "Robotica Junior - Hugo Vega", quantity: 1, unitPrice: toMoney(55) },
+        ],
         total: toMoney(55),
         status: "pending",
         billingPeriod: "Marzo 2026",
@@ -275,7 +281,9 @@ export function createMockAppState(): PersistedAppState {
         issuedOn: "2025-12-01",
         studentId: "C005",
         payerName: "Javier Molina Prieto",
-        lineItems: [{ description: "Matematicas ESO - Sofia Molina", quantity: 1, unitPrice: toMoney(38) }],
+        lineItems: [
+          { description: "Matematicas ESO - Sofia Molina", quantity: 1, unitPrice: toMoney(38) },
+        ],
         total: toMoney(38),
         status: "voided",
         billingPeriod: "Diciembre 2025",

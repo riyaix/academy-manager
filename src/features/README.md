@@ -33,16 +33,16 @@ features/<name>/
 
 ## Registered features
 
-| Feature | Folder | Route |
-|---------|--------|-------|
-| Dashboard | `dashboard/` | `dashboard` |
-| Billing | `billing/` | `billing` |
+| Feature         | Folder             | Route             |
+| --------------- | ------------------ | ----------------- |
+| Dashboard       | `dashboard/`       | `dashboard`       |
+| Billing         | `billing/`         | `billing`         |
 | Payment history | `payment-history/` | `payment-history` |
-| Reports | `reports/` | `reports` |
-| Students | `students/` | `students` |
-| Courses | `courses/` | `courses` |
-| Groups | `groups/` | `groups` |
-| Calendar | `calendar/` | `calendar` |
-| Settings | `settings/` | `settings` |
+| Reports         | `reports/`         | `reports`         |
+| Students        | `students/`        | `students`        |
+| Courses         | `courses/`         | `courses`         |
+| Groups          | `groups/`          | `groups`          |
+| Calendar        | `calendar/`        | `calendar`        |
+| Settings        | `settings/`        | `settings`        |
 
 See [`_template/README.md`](./_template/README.md) for the full checklist.
