@@ -90,7 +90,7 @@ git push origin v0.3.0
 
 ## Requirements (development)
 
-- [Node.js](https://nodejs.org/) 20+
+- [Node.js](https://nodejs.org/) **22+** (required for in-memory SQLite tests; CI uses Node 22)
 - [Rust](https://www.rust-lang.org/tools/install) (Tauri desktop builds)
 - **Linux:** WebKitGTK 4.1 and build tools ([Tauri prerequisites](https://v2.tauri.app/start/prerequisites/))
 - **Windows:** WebView2 + [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
@@ -134,4 +134,8 @@ Each feature registers in `app/navigation/registry.ts` and must not import sibli
 
 ## License
 
-Private / personal tool — see repository owner for terms.
+Copyright (c) 2026 riyaix
+
+Academy Manager is free software: you can redistribute it and/or modify it under the terms of the [GNU General Public License v3.0 or later](LICENSE).
+
+This program is distributed **as is**, without warranty of any kind. If you distribute a modified version, you must release the corresponding source under the same license.

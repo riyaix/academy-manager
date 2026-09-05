@@ -6,6 +6,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/) and [Semantic Ver
 
 ## [Unreleased]
 
+### Added
+
+- GPL-3.0-or-later license
+
+### Changed
+
+- CI and release workflows use Node.js 22 (required for `node:sqlite` tests)
+
 ## [0.3.0] - 2026-09-05
 
 ### Changed
